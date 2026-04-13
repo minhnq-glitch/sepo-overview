@@ -97,7 +97,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     <p>Software Engineering Process Orchestrator</p>
     <div class="sb-badges">
       <span class="sb-badge sb-b1">6 Phases</span>
-      <span class="sb-badge sb-b2">24 Steps</span>
+      <span class="sb-badge sb-b2">27 Steps</span>
       <span class="sb-badge sb-b3">50 Skills</span>
     </div>
   </div>
@@ -174,6 +174,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 <span class="s1">T5/SKILL.md</span>                    Production
   <span class="s2">T5/T510.md</span>                  Deploy
+  <span class="s2">T5/T520.md</span>                  Post Production
   <span class="s2">T5/T530.md</span>                  Checkpoint
 
 <span class="sh">helpers/detect-step.md</span>         Detect
@@ -224,32 +225,908 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 <script>
 const STEPS={
-T010:{code:"T010",name:"Setup ClaudeCode: Pull Git & Connect DB",phase:"T0 — Setup",type:"A",team:"DevOps + Backend Dev",objective:"Thiet lap moi truong: clone repos, connect DB, setup .env.",preconditions:["Git installed","Node.js >= 20","GitLab access"],inputDocs:["GIT-DB-Structure.md — repo list & DB connections","vault.md — credentials (git, DB, API keys)"],outputDocs:["All repos cloned",".env created","DB connected & verified","Dev server starts"],skillFile:"sepo_skill/steps/T0/T010.md",prompt:"Step 1: Doc GIT-DB-Structure.md va vault.md\n1. Clone tat ca repos tu ma tran\n2. Ket noi database, liet ke tables\n3. Kiem tra Staging co data, neu chua copy 100 rows tu Prod\n4. Verify tat ca tables co data\n\nStep 2: Doc va su dung CLAUDE.md\n- Hoi user thong tin setup lan dau\n- Doc Company-design-system, Clevai_Tech_Stack_Prefer\n\nStep 3: Install gstack",refs:["@docs/GIT-DB-Structure.md","@docs/vault.md","@docs/Company-design-system.md","@docs/Clevai_Tech_Stack_Prefer.md"],next:"T110"},
-T110:{code:"T110",name:"L1: Voi Tong — Entity Overview",phase:"T1 — Analysis",type:"A",team:"BA + System Architect",objective:"Tao document L1: tong quan entities, relationships, system boundary.",preconditions:["T010 done","Co tai lieu yeu cau"],inputDocs:["VOI / requirement docs","Existing codebase (neu co)"],outputDocs:["L1_VoiTong.md — entity list + layer A/B/C","System boundary diagram (ASCII)"],skillFile:"sepo_skill/steps/T1/T110.md",prompt:"Ban la BA + System Architect.\nChuyen input thanh MarkDown theo VoiTable format:\n| Entity | Description | Layer (A/B/C) | Relationships |\n\nLayer A = Reference (it thay doi)\nLayer B = Plan (theo chu ky)\nLayer C = Transaction (thuong xuyen thay doi)",refs:["@docs/layerevent.md — for layer classification"],next:"T120"},
-T120:{code:"T120",name:"L2: Workflows",phase:"T1 — Analysis",type:"A",team:"BA + Process Designer",objective:"Mo ta cac workflow chinh dua tren entities o L1.",preconditions:["T110 done","User reviewed L1"],inputDocs:["L1_VoiTong.md","VOI / requirement docs"],outputDocs:["L2_Workflows.md — workflows + actors + triggers","Workflow-to-Entity mapping"],skillFile:"sepo_skill/steps/T1/T120.md",prompt:"Ban la BA + Process Designer.\nPhan tich workflows chinh. Moi workflow can:\n- Ten, Actors, Trigger, Steps tong quat, Output\nTao Workflow-to-Entity mapping.",refs:["@docs/L1_VoiTong.md"],next:"T130"},
-T130:{code:"T130",name:"L3: Workflow Details",phase:"T1 — Analysis",type:"A",team:"BA + UX + Backend Dev",objective:"Chi tiet hoa tung step: data flow, UI, API, validations.",preconditions:["T110 + T120 done"],inputDocs:["L1_VoiTong.md","L2_Workflows.md","Requirements"],outputDocs:["L3_WorkflowDetails.md — input/output/actor/UI/API/validation per step","Sequence diagrams (ASCII)"],skillFile:"sepo_skill/steps/T1/T130.md",prompt:"Ban la BA + UX + Backend Dev.\nChi tiet hoa tung step:\n- Input data, Output data, Actor\n- UI screen, API call, Validation rules\nVe sequence diagrams cho cac flow chinh.",refs:["@docs/L1_VoiTong.md","@docs/L2_Workflows.md"],next:"T140"},
-T140:{code:"T140",name:"Project Guide",phase:"T1 — Analysis",type:"A",team:"Tech Writer + PM",objective:"Tai lieu huong dan cho developer moi.",preconditions:["L1, L2, L3 done"],inputDocs:["L1, L2, L3 docs","Codebase structure"],outputDocs:["ProjectGuide.md — overview, setup, conventions, architecture"],skillFile:"sepo_skill/steps/T1/T140.md",prompt:"Ban la Technical Writer + PM.\nTao ProjectGuide: overview, setup instructions,\ncode conventions, architecture, team roles.",refs:["@docs/L1_VoiTong.md","@docs/L2_Workflows.md","@docs/L3_WorkflowDetails.md"],next:"T211"},
-T211:{code:"T211",name:"Prep: Update DB Schema",phase:"T2 — Architecture",type:"B",team:"DB Architect + Backend Dev",objective:"De xuat DB schema, sinh migration SQL.",preconditions:["L1 co","Biet DB engine"],inputDocs:["L1_VoiTong.md / AP draft","Current DB schema"],outputDocs:["migration.sql","ERD diagram (ASCII)","Schema proposal"],skillFile:"sepo_skill/steps/T2/T210/T211.md",prompt:"De xuat ArchitecturePack:\n1. ERD  2. Process  3. Wireframe  4. UserFlows\n5. Complex Logic  6. Feature & Layer\n7. Task classification (doc layerevent.md):\n- A: Chi UI/API  - B: Sua schema (khong Event layer)\n- C: Touch Event/CalculateKR layers",refs:["@docs/L1_VoiTong.md","@docs/database_schema_stg.md"],next:"T212"},
-T212:{code:"T212",name:"Build ArchitecturePack",phase:"T2 — Architecture",type:"A",team:"Architect + Writer + DB",objective:"Tao ArchitecturePack day du 7 sections.",preconditions:["L1-L3 done","Schema reviewed"],inputDocs:["L1, L2, L3 docs","DB Schema","layerevent.md"],outputDocs:["ArchitecturePack.md (7 sections)"],skillFile:"sepo_skill/steps/T2/T210/T212.md",prompt:"Tao ArchitecturePack:\n1. ERD + schema  2. Process flows + status machines\n3. ASCII wireframes  4. Sequence diagrams\n5. Algorithms, formulas  6. Feature→Code→DB mapping\n7. Task classification A/B/C",refs:["@docs/L1_VoiTong.md","@docs/L2_Workflows.md","@docs/L3_WorkflowDetails.md","@docs/layerevent.md"],next:"T220"},
-T220:{code:"T220",name:"Create ISP",phase:"T2 — Architecture",type:"A",team:"Tech Lead + Architect + QA",objective:"Chia AP thanh incremental TDD steps.",preconditions:["AP approved"],inputDocs:["ArchitecturePack.md"],outputDocs:["IncrementalStepPlan.md — steps + scope + tests + deps"],skillFile:"sepo_skill/steps/T2/T220.md",prompt:"You are a senior staff engineer.\nBreak system into SMALL, INCREMENTAL, BUILDABLE STEPS.\nRules: Atomic, Testable, Independent, Ordered (DB→API→UI), TDD.\nEach step: ID, Scope, Files, Dependencies, Test Criteria, Type A/B/C.",refs:["@docs/ArchitecturePack.md","@docs/Clevai_Tech_Stack_Prefer.md"],next:"T230"},
-T230:{code:"T230",name:"Audit ISP ⭐ Quality Gate #1",phase:"T2 — Architecture",type:"A",team:"ISP Auditor + Architect",objective:"7-point audit moi ISP step. Gate truoc khi code.",preconditions:["ISP created","AP approved"],inputDocs:["IncrementalStepPlan.md","ArchitecturePack.md","Tech Stack Prefer"],outputDocs:["ISP Audited — enriched, ENRICH/BLOCK verdict"],skillFile:"sepo_skill/steps/T2/T230.md",gate:"Quality Gate #1 — 7 tieu chi truoc khi code",prompt:"ISP Quality Auditor. 7 tieu chi:\n① Data Source (table/field cu the?)\n② API Contract (method, endpoint, schema?)\n③ UI Spec (wireframe ref?)\n④ Business Logic (formulas?)\n⑤ Acceptance Criteria (checklist FE+BE?)\n⑥ Library/Tool (specific?)\n⑦ Dependencies (step truoc?)\n\nVerdict: ENRICH (>=5/7) | BLOCK (<5/7)",refs:["@docs/IncrementalStepPlan.md","@docs/ArchitecturePack.md"],next:"T310"},
-T310:{code:"T310",name:"Build — Implement 🔄",phase:"T3 — Build",type:"A/B",team:"Senior Engineer + Reviewer",objective:"TDD implement 1 ISP step. Lap cho moi step.",preconditions:["ISP Audited","Prev steps done"],inputDocs:["ISP Audited + AP section"],outputDocs:["Tests passing","Code implemented","npm run check OK"],skillFile:"sepo_skill/steps/T3/T300-001/T310-001.md",prompt:"Senior engineer, disciplined incremental dev.\nRules: One change/step. No speculation. Tests mandatory.\n1. Write tests  2. Implement minimum  3. npm run check\n4. No regressions  5. Document limitations  6. Ask to continue",refs:["@docs/IncrementalStepPlanAudited.md","@docs/ArchitecturePack.md"],next:"T320"},
-T320:{code:"T320",name:"Test — Verify 🔄",phase:"T3 — Build",type:"A",team:"QA + Security",objective:"Verify step: happy path, edge cases, security.",preconditions:["T310 done"],inputDocs:["ISP step + test criteria","Code"],outputDocs:["Test report","Edge cases documented"],skillFile:"sepo_skill/steps/T3/T300-001/T320-001.md",prompt:"Disciplined senior engineer. Step desc = source of truth.\nOne step only. No speculation.\n1. TEST DESIGN  2. HAPPY PATH  3. EDGE CASES\n4. ERROR HANDLING  5. SECURITY  6. REGRESSION",refs:["@docs/IncrementalStepPlanAudited.md"],next:"T310 (next) or T380"},
-T380:{code:"T380",name:"Finish — Commit & Push",phase:"T3 — Build",type:"A",team:"DevOps + Writer",objective:"Commit, push git, tao MR.",preconditions:["All ISP steps done"],inputDocs:["vault.md","GIT-DB-Structure.md"],outputDocs:["Code on Git","MR created","CI passes"],skillFile:"sepo_skill/steps/T3/T380.md",prompt:"1. Doc vault.md lay git credentials\n2. Naming: Object + Function + Interface (GIT-DB-Structure)\n3. Merge FE+BE → 1 repo → push gitlab.clevai.vn/fe/[name]\n4. MR → staging-c, fix CI\n5. Domain: [name].mikai.tech",refs:["@docs/vault.md","@docs/GIT-DB-Structure.md"],next:"T390"},
-T390:{code:"T390",name:"Post-Audit ⭐ Quality Gate #2",phase:"T3 — Build",type:"A",team:"Architect + Auditor + QA",objective:"So sanh code vs AP: gaps, discrepancies.",preconditions:["Code pushed"],inputDocs:["ArchitecturePack.md","ISP","Codebase","layerevent.md"],outputDocs:["PostAudit.md — AP vs Code matrix"],skillFile:"sepo_skill/steps/T3/T390.md",gate:"Quality Gate #2 — Code phai match AP",prompt:"Senior architect + code auditor.\nMUST follow CLAUDE.md.\nAudit: 1. Schema vs ERD  2. APIs vs specs\n3. UI vs wireframes  4. Logic vs algorithms\n5. Re-classify A/B/C",refs:["@docs/ArchitecturePack.md","@docs/layerevent.md"],next:"T411"},
-T411:{code:"T411",name:"Run Migration",phase:"T4 — Deploy",type:"B",team:"DB Architect + DevOps",objective:"Chay migration tren staging.",preconditions:["migration.sql co"],inputDocs:["migration.sql","vault.md"],outputDocs:["Schema migrated","No data loss"],skillFile:"sepo_skill/steps/T4/T410/T411.md",prompt:"Senior DB architect: read vault + migration.sql,\ncompare with current schema, execute safely\nwith rollback plan.",refs:["@docs/migration.sql","@docs/vault.md"],next:"T412"},
-T412:{code:"T412",name:"Deploy Local & Smoke",phase:"T4 — Deploy",type:"A",team:"DevOps + QA",objective:"Deploy local, smoke test.",preconditions:["T411 done"],inputDocs:["Codebase",".env"],outputDocs:["App running","Smoke pass"],skillFile:"sepo_skill/steps/T4/T410/T412.md",prompt:"Start dev server, verify pages, test CRUD,\ncheck APIs, verify DB connections.",refs:["@docs/vault.md"],next:"T413"},
-T413:{code:"T413",name:"Push Git & CI",phase:"T4 — Deploy",type:"A",team:"DevOps",objective:"Push code, verify CI.",preconditions:["T412 pass"],inputDocs:["vault.md"],outputDocs:["Code on remote","CI passes"],skillFile:"sepo_skill/steps/T4/T410/T413.md",prompt:"Commit, push, verify CI pipeline, fix failures.",refs:["@docs/vault.md"],next:"T414"},
-T414:{code:"T414",name:"Deploy Staging",phase:"T4 — Deploy",type:"A",team:"DevOps + SRE",objective:"Deploy to staging.",preconditions:["T413 CI pass"],inputDocs:["vault.md"],outputDocs:["Staging live","Health OK"],skillFile:"sepo_skill/steps/T4/T410/T414.md",prompt:"Deploy staging, verify health check,\ntest critical flows. Domain: [name].mikai.tech",refs:["@docs/vault.md"],next:"T415"},
-T415:{code:"T415",name:"Staging Checkpoint",phase:"T4 — Deploy",type:"A",team:"Writer + DevOps",objective:"Luu checkpoint staging.",preconditions:["T414 success"],inputDocs:["Git log","Staging DB"],outputDocs:["STG_VersionCommit.md","STG_DB_Schema.md"],skillFile:"sepo_skill/steps/T4/T410/T415.md",prompt:"Tong hop commits → STG_VersionCommit_vxx_date.md\nExport schema → STG_DB_Schema_{ver}_{date}.md",refs:["@docs/vault.md"],next:"T421"},
-T421:{code:"T421",name:"Prep Test Data",phase:"T4 — UAT",type:"A",team:"QA Lead + Data Eng",objective:"Chuan bi test data + test cases.",preconditions:["Staging deployed"],inputDocs:["ArchitecturePack.md","Staging URL"],outputDocs:["Test cases","Test data ready"],skillFile:"sepo_skill/steps/T4/T420/T421.md",prompt:"QA Lead: doc AP, viet test cases (happy + edge),\ntao test data, tao test accounts.",refs:["@docs/ArchitecturePack.md"],next:"T422"},
-T422:{code:"T422",name:"Execute UAT & Feedback",phase:"T4 — UAT",type:"A",team:"QA + UX",objective:"Chay UAT, thu feedback.",preconditions:["T421 done"],inputDocs:["Test cases","T720_TestFeedback_Template"],outputDocs:["TestFeedback_{date}.xlsx"],skillFile:"sepo_skill/steps/T4/T420/T422.md",prompt:"Download T720_TestFeedback_Template,\nexecute tests, record pass/fail + screenshots + severity.",refs:["@docs/T720_TestFeedback_Template.xlsx"],next:"T423"},
-T423:{code:"T423",name:"Classify Feedback A/B/C",phase:"T4 — UAT",type:"A",team:"QA + PM + Architect",objective:"Phan loai feedback.",preconditions:["T422 done"],inputDocs:["TestFeedback.xlsx","layerevent.md"],outputDocs:["Classified: A (UI) / B (Logic) / C (Perf)"],skillFile:"sepo_skill/steps/T4/T420/T423.md",prompt:"Phan loai theo layerevent.md:\nA: Chi UI/API\nB: Sua schema → can POSUP duyet\nC: Touch Event/KR → can POSUP + ARCH duyet",refs:["@docs/layerevent.md"],next:"T431/T432/T433"},
-T431:{code:"T431",name:"Fix A-type (UI/API)",phase:"T4 — Fix",type:"A",team:"Frontend + UX",objective:"Fix UI feedback.",preconditions:["T423 done","A items exist"],inputDocs:["A-type feedback"],outputDocs:["A items fixed"],skillFile:"sepo_skill/steps/T4/T430/T431.md",prompt:"Fix A-type items by severity.\nVerify no regression. npm run check.",refs:["@docs/TestFeedback.xlsx"],next:"Re-deploy T410"},
-T432:{code:"T432",name:"Fix B-type (Logic) ⚠️",phase:"T4 — Fix",type:"B",team:"Backend + BA",objective:"Fix logic, may change schema. POSUP approval needed.",preconditions:["T423 done","POSUP approved"],inputDocs:["B-type feedback","ArchitecturePack.md"],outputDocs:["B items fixed","Schema updated if needed"],skillFile:"sepo_skill/steps/T4/T430/T432.md",prompt:"⚠️ BAO POSUP DUYET TRUOC.\nCap nhat AP neu can. Fix items,\nupdate migration.sql, run full tests.",refs:["@docs/ArchitecturePack.md","@docs/layerevent.md"],next:"Re-deploy T410"},
-T433:{code:"T433",name:"Fix C-type (Perf) ⚠️⚠️",phase:"T4 — Fix",type:"C",team:"Perf Eng + Architect",objective:"Performance + core layer changes. POSUP + ARCH approval.",preconditions:["T423 done","POSUP + ARCH approved"],inputDocs:["C-type feedback","AP","layerevent.md"],outputDocs:["Perf improved","Core stable"],skillFile:"sepo_skill/steps/T4/T430/T433.md",prompt:"⚠️⚠️ BAO POSUP + ARCH DUYET TRUOC.\nPhan tich bottlenecks, fix, benchmark before/after.",refs:["@docs/ArchitecturePack.md","@docs/layerevent.md"],next:"Re-deploy T410"},
-T510:{code:"T510",name:"Deploy Production",phase:"T5 — Production",type:"A",team:"DevOps + SRE + DB",objective:"Deploy len production.",preconditions:["UAT pass","Bugs fixed"],inputDocs:["vault.md","migration.sql (if any)"],outputDocs:["App live","Health check pass"],skillFile:"sepo_skill/steps/T5/T510.md",prompt:"Tong hop DB changes → changedb.sql\nTong hop keys → changevault.md\nMR vao prod-c kem files.",refs:["@docs/vault.md"],next:"T530"},
-T530:{code:"T530",name:"Production Checkpoint",phase:"T5 — Production",type:"A",team:"Writer + DevOps",objective:"Luu checkpoint production.",preconditions:["T510 stable"],inputDocs:["Git log","Prod DB"],outputDocs:["PRD_VersionCommit.md","PRD_DB_Schema.md"],skillFile:"sepo_skill/steps/T5/T530.md",prompt:"Tong hop commits → PRD_VersionCommit_vxx_date.md\nExport schema → PRD_DB_Schema_{ver}_{date}.md",refs:["@docs/vault.md"],next:"Done! 🎉"}
+T010:{code:"T010",name:"Setup ClaudeCode: Pull Git & Connect DB",phase:"T0 — Setup",type:"A",team:"DevOps Engineer + Backend Developer",objective:"Thiet lap moi truong phat trien: clone tat ca git repos lien quan va ket noi database de developer co the bat dau code ngay.",preconditions:["Git installed & configured","Node.js >= 20","GitLab access (gitlab.clevai.vn)","Co file GIT-DB-Structure.md","Co file vault.md"],inputDocs:["GIT-DB-Structure.md — repo list & DB connections","vault.md — credentials (git, DB, API keys)"],outputDocs:["All repos cloned & on correct branch",".env created with credentials","DB connected & verified (SELECT 1)","Dev server starts (npm run dev)"],skillFile:"sepo_skill/steps/T0/T010.md",prompt:`Step 1:
+\u0110\u1ECDc file GIT-DB-Structure.md v\u00E0 vault.md. Sau \u0111\u00F3:
+1. X\u00E1c \u0111\u1ECBnh t\u1EA5t c\u1EA3 git repos ph\u1EE5c v\u1EE5 module [MODULE] t\u1EEB ma tr\u1EADn trong GIT-DB-Structure.md
+2. D\u00F9ng credentials trong vault.md \u0111\u1EC3 clone to\u00E0n b\u1ED9 repos \u0111\u00F3 v\u1EC1 th\u01B0 m\u1EE5c [MODULE] tr\u00EAn local
+3. K\u1EBFt n\u1ED1i v\u00E0o database (credentials trong vault.md), li\u1EC7t k\u00EA t\u1EA5t c\u1EA3 databases v\u00E0 c\u00E1c b\u1EA3ng trong t\u1EEBng database
+4. Sau khi k\u1EBFt n\u1ED1i xong, li\u1EC7t k\u00EA c\u00E1c b\u1EA3ng c\u1EE7a c\u00E1c DB \u0111\u00E3 k\u1EBFt n\u1ED1i; v\u00E0 c\u00E1c repo \u0111\u00E3 pull
+5. Sau khi connect c\u00E1c b\u1EA3ng Staging, ki\u1EC3m tra xem c\u00F3 data ch\u01B0a, n\u1EBFu ch\u01B0a th\u00EC l\u1EA5y \u00EDt nh\u1EA5t 100 d\u00F2ng g\u1EA7n nh\u1EA5t cho m\u1ED7i b\u1EA3ng t\u1EEB Production v\u1EC1 Staging
+6. Ki\u1EC3m tra t\u1EA5t c\u1EA3 c\u00E1c b\u1EA3ng theo c\u00E1c db \u0111\u00E3 connect \u0111\u1EC1u c\u00F3 d\u1EEF li\u1EC7u, n\u1EBFu kh\u00F4ng th\u00EC th\u00F4ng b\u00E1o l\u1EA1i.
+
+C\u00E1c MODULE c\u1EA7n connect database v\u00E0 git l\u00E0:
+- {MODULE}
+- {MODULE}
+- {MODULE}
+
+Step 2:
+1. \u0110\u1ECDc v\u00E0 b\u1EAFt bu\u1ED9c s\u1EED d\u1EE5ng CLAUDE.md cho to\u00E0n b\u1ED9 c\u00E1c prompt.
+2 Trong file CLAUDE.md h\u1ECFi user c\u00E1c th\u00F4ng tin c\u1EA7n thi\u1EBFt \u0111\u1EC3 setup l\u1EA7n \u0111\u1EA7u. C\u00E1c th\u00F4ng tin ch\u01B0a c\u00F3 s\u1EBD b\u1ED5 sung ti\u1EBFp trong qu\u00E1 tr\u00ECnh l\u00E0m d\u1EF1 \u00E1n.
+2. \u0110\u1ECDc k\u1EF9  v\u00E0 s\u1EED d\u1EE5ng c\u00E1c file "Company-design-system", "Clevai_Tech_Stack_Prefer" trong qu\u00E1 tr\u00ECnh l\u00E0m d\u1EF1 \u00E1n
+Step 3:
+Download v\u00E0 c\u00E0i \u0111\u1EB7t https://github.com/garrytan/gstack.git`,refs:["@docs/GIT-DB-Structure.md","@docs/vault.md","@docs/Company-design-system.md","@docs/Clevai_Tech_Stack_Prefer.md"],next:"T110"},
+
+T110:{code:"T110",name:"L1: Voi Tong — Entity Overview",phase:"T1 — Analysis",type:"A",team:"Business Analyst + System Architect",objective:"Phan tich he thong va tao document L1 (Voi tong): tong quan cac entities, relationships, va system boundary.",preconditions:["T010 done","Co tai lieu yeu cau (VOI, feature doc, hoac existing codebase)"],inputDocs:["VOI / requirement docs","Existing codebase (neu co)"],outputDocs:["L1_VoiTong.md — entity list + layer A/B/C","System boundary diagram (ASCII)"],skillFile:"sepo_skill/steps/T1/T110.md",prompt:"Chuy\u1EC3n c\u00E1c File d\u01B0\u1EDBi \u0111\u00E2y th\u00E0nh file d\u1EA1ng MarkDown",refs:["@docs/layerevent.md — for layer classification"],next:"T120"},
+
+T120:{code:"T120",name:"L2: Workflows",phase:"T1 — Analysis",type:"A",team:"Business Analyst + Process Designer",objective:"Phan tich va mo ta cac workflow (luong nghiep vu) chinh cua he thong dua tren entities da xac dinh o L1.",preconditions:["T110 done","User reviewed L1"],inputDocs:["L1_VoiTong.md","VOI / requirement docs"],outputDocs:["L2_Workflows.md — workflows + actors + triggers","Workflow-to-Entity mapping"],skillFile:"sepo_skill/steps/T1/T120.md",prompt:"Ban la team chuyen gia gom Business Analyst + Process Designer.\nNhiem vu: Phan tich va mo ta cac workflow (luong nghiep vu) chinh cua he thong dua tren entities da xac dinh o L1.\nHay thuc hien theo Execution Procedure o tren.",refs:["@docs/L1_VoiTong.md"],next:"T130"},
+
+T130:{code:"T130",name:"L3: Workflow Details",phase:"T1 — Analysis",type:"A",team:"Business Analyst + UX Designer + Backend Developer",objective:"Chi tiet hoa tung step trong moi workflow: data flow, UI interactions, API calls, validations.",preconditions:["T110 + T120 done"],inputDocs:["L1_VoiTong.md","L2_Workflows.md","Requirements"],outputDocs:["L3_WorkflowDetails.md — input/output/actor/UI/API/validation per step","Sequence diagrams (ASCII)"],skillFile:"sepo_skill/steps/T1/T130.md",prompt:"Ban la team chuyen gia gom Business Analyst + UX Designer + Backend Developer.\nNhiem vu: Chi tiet hoa tung step trong moi workflow: data flow, UI interactions, API calls, validations.\nHay thuc hien theo Execution Procedure o tren.",refs:["@docs/L1_VoiTong.md","@docs/L2_Workflows.md"],next:"T140"},
+
+T140:{code:"T140",name:"Project Guide",phase:"T1 — Analysis",type:"A",team:"Technical Writer + Project Manager",objective:"Tao tai lieu huong dan du an cho developer moi join: setup, conventions, architecture overview.",preconditions:["L1, L2, L3 done"],inputDocs:["L1, L2, L3 docs","Codebase structure"],outputDocs:["ProjectGuide.md — overview, setup, conventions, architecture"],skillFile:"sepo_skill/steps/T1/T140.md",prompt:"Ban la team chuyen gia gom Technical Writer + Project Manager.\nNhiem vu: Tao tai lieu huong dan du an cho developer moi join: setup, conventions, architecture overview.\nHay thuc hien theo Execution Procedure o tren.",refs:["@docs/L1_VoiTong.md","@docs/L2_Workflows.md","@docs/L3_WorkflowDetails.md"],next:"T211"},
+
+T211:{code:"T211",name:"Prep: Update DB Schema",phase:"T2 — Architecture",type:"B",team:"Database Architect + Backend Developer",objective:"Phan tich entities tu L1/AP va de xuat/update DB schema. Sinh migration SQL neu can.",preconditions:["L1 da co (hoac AP draft)","Biet DB engine (PostgreSQL/MySQL)"],inputDocs:["L1_VoiTong.md hoac ArchitecturePack draft","Current DB schema"],outputDocs:["DB schema proposal","migration.sql","ERD diagram (ASCII)"],skillFile:"sepo_skill/steps/T2/T210/T211.md",prompt:`H\u00E3y \u0111\u1EC1 xu\u1EA5t ArchitecturePack  cho h\u1EC7 th\u1ED1ng n\u00E0y:
+1. EntityRelationshipDescription
+2. ProcessDescription
+3. UIWireFrame
+4. UserFlows
+5. Complex Logic
+6. Feature & Layer
+7 Task classification
+    - H\u00E3y \u0111\u1ECDc file [layerevent.md] \u0111\u1EC3 ph\u00E2n lo\u1EA1i Task do user cung c\u1EA5p theo ti\u00EAu ch\u00ED sau:
+    - Lo\u1EA1i A: N\u1EBFu ch\u1EC9 ch\u1EC9nh s\u1EEDa UI, API, kh\u00F4ng s\u1EEDa Entity Schema, ho\u1EB7c c\u00E1c API ch\u1EC9 query v\u00E0o 1 ho\u1EB7c 2 b\u1EA3ng th\u00F4i.
+    -Lo\u1EA1i B: N\u1EBFu c\u00F3 s\u1EEDa Entity Schema, nh\u01B0ng kh\u00F4ng \u0111\u1ECDc vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer Event v\u00E0 Event Details, v\u00E0 kh\u00F4ng vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer CalculateKR v\u00E0 ExtractEvent
+    -Lo\u1EA1i C: N\u1EBFu c\u00F3 s\u1EEDa, \u0111\u1ECDc, vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer Event v\u00E0 Event Details, ho\u1EB7c s\u1EEDa, vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer CalculateKR v\u00E0 ExtractEvent
+r
+
+L\u01B0u \u00FD:
+1. Kh\u00F4ng t\u1EA1o th\u00EAm c\u00E1c entity m\u1EDBi tr\u1EEB khi th\u1EADt c\u1EA7n thi\u1EBFt, h\u00E3y s\u1EED d\u1EE5ng c\u00E1c entity \u0111\u00E3 c\u00F3 ho\u1EB7c \u0111\u1EC1 xu\u1EA5t th\u00EAm c\u00E1c tr\u01B0\u1EDDng trong c\u00E1c b\u1EA3ng.
+2. \u0110\u01B0a ra c\u00E1c th\u00EAm c\u00E1c g\u1EE3i \u00FD \u0111\u1EC3 ho\u00E0n hi\u1EC7n system design
+3. \u0110\u1ED3ng b\u1ED9 l\u1EA1i c\u00E1c th\u00F4ng tin sau khi \u0111\u00E3 s\u1EEDa \u0111\u1ED5i, n\u1EBFu c\u00E1c logic m\u00E0 kh\u00F4ng \u0111\u1ED3ng b\u1ED9 v\u1EDBi nhau th\u00EC h\u1ECFi l\u1EA1i.
+4. N\u1EBFu Task lo\u1EA1i B, c\u1EA7n b\u00E1o cho POSUP \u0111\u1EC3 duy\u1EC7t Architecture Pack tr\u01B0\u1EDBc khi th\u1EF1c thi
+5. N\u1EBFu Task lo\u1EA1i C, c\u1EA7n b\u00E1o cho POSUP v\u00E0 ARCH \u0111\u1EC3 duy\u1EC7t Architecture Pack tr\u01B0\u1EDBc khi th\u1EF1c thi
+6. File Architecture Pack n\u00E0y l\u00E0 t\u00E0i li\u1EC7u quan tr\u1ECDng, c\u1EA7n ph\u1EA3i nh\u1EAFc \u0111\u1EBFn trong file claude.md. Khi file Architecture Pack n\u00E0y l\u1EDBn qu\u00E1 20 kb th\u00EC c\u1EA7n ph\u1EA3i t\u00E1ch th\u00E0nh nhi\u1EC1u file, ch\u1EC9 nh\u1EEFng th\u00F4ng tin quan tr\u1ECDng nh\u1EA5t th\u00EC gi\u1EEF l\u1EA1i trong Architecture Pack, c\u00E1c th\u00F4ng tin kh\u00E1c th\u00EC \u0111\u01B0a v\u00E0o ph\u1EE5 l\u1EE5c. V\u00E0 trong file Architecture Pack th\u00EC c\u1EA7n c\u00F3 danh s\u00E1ch c\u00E1c file ph\u1EE5 l\u1EE5c v\u00E0 m\u00F4 t\u1EA3 n\u1ED9i dung c\u1EE7a t\u1EEBng file.
+7. \u0110\u01B0a ra c\u00E1c gi\u1EA3i ph\u00E1p t\u1ED5ng qu\u00E1t \u0111\u1EC3 gi\u1EA3i quy\u1EBFt tri\u1EC7t \u0111\u1EC3 c\u00E1c bug t\u01B0\u01A1ng t\u1EF1 trong file [buglist_version_date].md
+
+H\u00E3y \u0111\u1ECDc k\u0129 c\u00E1c file sau:
+1.
+2.
+3.
+
+Xu\u1EA5t k\u1EBFt qu\u1EA3 ra file: architecturepack_[project name].md
+trong \u0111\u00F3 [project name] trong l\u1ECBch s\u1EED chat ho\u1EB7c ch\u01B0a r\u00F5 th\u00EC h\u1ECFi l\u1EA1i user`,refs:["@docs/L1_VoiTong.md","@docs/database_schema_stg.md","@docs/layerevent.md"],next:"T212"},
+
+T212:{code:"T212",name:"Build ArchitecturePack",phase:"T2 — Architecture",type:"A",team:"Software Architect + Technical Writer + Database Architect",objective:"Tao ArchitecturePack day du 7 sections cho du an.",preconditions:["L1-L3 done","Schema reviewed (T211)","Codebase accessible"],inputDocs:["L1, L2, L3 docs","DB Schema (tu T211)","layerevent.md"],outputDocs:["ArchitecturePack_{project}_{version}_{date}.md (7+ sections)"],skillFile:"sepo_skill/steps/T2/T210/T212.md",prompt:`H\u00E3y \u0111\u1EC1 xu\u1EA5t ArchitecturePack  cho h\u1EC7 th\u1ED1ng n\u00E0y:
+1. EntityRelationshipDescription
+2. ProcessDescription
+3. UIWireFrame
+4. UserFlows
+5. Complex Logic
+6. Feature & Layer
+7 Task classification
+    - H\u00E3y \u0111\u1ECDc file [layerevent.md] \u0111\u1EC3 ph\u00E2n lo\u1EA1i Task do user cung c\u1EA5p theo ti\u00EAu ch\u00ED sau:
+    - Lo\u1EA1i A: N\u1EBFu ch\u1EC9 ch\u1EC9nh s\u1EEDa UI, API, kh\u00F4ng s\u1EEDa Entity Schema
+    -Lo\u1EA1i B: N\u1EBFu c\u00F3 s\u1EEDa Entity Schema, nh\u01B0ng kh\u00F4ng \u0111\u1ECDc vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer Event v\u00E0 Event Details, v\u00E0 kh\u00F4ng vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer CalculateKR v\u00E0 ExtractEvent
+    -Lo\u1EA1i C: N\u1EBFu c\u00F3 s\u1EEDa, \u0111\u1ECDc, vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer Event v\u00E0 Event Details, ho\u1EB7c s\u1EEDa, vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer CalculateKR v\u00E0 ExtractEvent
+
+L\u01B0u \u00FD:
+1. Kh\u00F4ng t\u1EA1o th\u00EAm c\u00E1c entity m\u1EDBi tr\u1EEB khi th\u1EADt c\u1EA7n thi\u1EBFt, h\u00E3y s\u1EED d\u1EE5ng c\u00E1c entity \u0111\u00E3 c\u00F3 ho\u1EB7c \u0111\u1EC1 xu\u1EA5t th\u00EAm c\u00E1c tr\u01B0\u1EDDng trong c\u00E1c b\u1EA3ng.
+2. \u0110\u01B0a ra c\u00E1c th\u00EAm c\u00E1c g\u1EE3i \u00FD \u0111\u1EC3 ho\u00E0n hi\u1EC7n system design
+3. \u0110\u1ED3ng b\u1ED9 l\u1EA1i c\u00E1c th\u00F4ng tin sau khi \u0111\u00E3 s\u1EEDa \u0111\u1ED5i, n\u1EBFu c\u00E1c logic m\u00E0 kh\u00F4ng \u0111\u1ED3ng b\u1ED9 v\u1EDBi nhau th\u00EC h\u1ECFi l\u1EA1i.
+4. N\u1EBFu Task lo\u1EA1i B, c\u1EA7n b\u00E1o cho POSUP \u0111\u1EC3 duy\u1EC7t Architecture Pack tr\u01B0\u1EDBc khi th\u1EF1c thi
+5. N\u1EBFu Task lo\u1EA1i C, c\u1EA7n b\u00E1o cho POSUP v\u00E0 ARCH \u0111\u1EC3 duy\u1EC7t Architecture Pack tr\u01B0\u1EDBc khi th\u1EF1c thi
+
+H\u00E3y \u0111\u1ECDc k\u0129 c\u00E1c file sau:
+1.
+2.
+3.
+
+Xu\u1EA5t k\u1EBFt qu\u1EA3 ra file: architecturepack_[project name]_[version]_[date].md
+trong \u0111\u00F3 [project name], [version], [date] trong l\u1ECBch s\u1EED chat ho\u1EB7c ch\u01B0a r\u00F5 th\u00EC h\u1ECFi l\u1EA1i user`,refs:["@docs/L1_VoiTong.md","@docs/L2_Workflows.md","@docs/L3_WorkflowDetails.md","@docs/layerevent.md"],next:"T220"},
+
+T220:{code:"T220",name:"Create ISP",phase:"T2 — Architecture",type:"A",team:"Technical Program Lead + Software Architect + QA Lead",objective:"Chia ArchitecturePack thanh cac buoc incremental (TDD approach) de developer implement tung step.",preconditions:["AP approved"],inputDocs:["ArchitecturePack.md"],outputDocs:["IncrementalStepPlan.md — steps + scope + tests + deps"],skillFile:"sepo_skill/steps/T2/T220.md",prompt:`You are a senior staff engineer and technical program lead.
+
+I have already completed system design documentation in File [architecturepack_project]
+- **Ph\u1EA7n 1:** EntityRelationshipDescription \u2014 C\u1EA5u tr\u00FAc d\u1EEF li\u1EC7u & quan h\u1EC7 entity
+- **Ph\u1EA7n 2:** ProcessDescription \u2014 M\u00F4 t\u1EA3 quy tr\u00ECnh FEE / PENALTY / BONUS
+- **Ph\u1EA7n 3:** UIWireFrame \u2014 Danh s\u00E1ch m\u00E0n h\u00ECnh & wireframe
+- **Ph\u1EA7n 4:** UserFlows \u2014 Lu\u1ED3ng ng\u01B0\u1EDDi d\u00F9ng theo vai tr\u00F2
+- **Ph\u1EA7n 5:** Complex Logic \u2014 Thu\u1EADt to\u00E1n, c\u00F4ng th\u1EE9c, business rules
+- **Ph\u1EA7n 6:** Feature & Layer \u2014 Module inventory, layer classification, dependency graph
+- **Ph\u1EA7n 7:** Task classification
+and other part
+
+Your task is NOT to write any production code yet.
+
+Your task is to break this system into a sequence of SMALL, INCREMENTAL, BUILDABLE STEPS
+that can be implemented one at a time using strict test-driven development.
+
+Constraints:
+- Each step must read deeply in architecturepack and use CLAUDE.MD
+- Each step must be independently testable
+- Each step must deliver a vertical slice (frontend \u2192 backend \u2192 logic \u2192 response), even if simplified
+- No step should introduce more than ONE new concept (e.g. auth, persistence, external API, async jobs)
+- Steps should start with mocked or static behavior and evolve toward real integrations
+- No speculative features
+- No refactoring steps unless required by failing tests
+- Assume the system may already exist but is buggy; steps should still be minimal and stabilizing
+- At the end there must be an integration test
+
+For EACH step, output:
+1. Step name (short and explicit)
+2. Goal (one sentence, user-visible or system-observable)
+3. Scope (what is included / explicitly excluded)
+4. Components touched (frontend, backend, DB, integrations \u2014 be explicit)
+5. Preconditions (what must already exist)
+6. Test cases to validate the step
+   - Backend tests
+   - Frontend tests
+7. Expected artifacts (endpoints, screens, entities, events \u2014 minimal)
+8. Exit criteria (how we know this step is complete)
+
+Rules:
+- Do NOT write implementation code
+- Do NOT merge steps together
+- Do NOT skip testing considerations
+- Do NOT assume future steps will fix problems introduced earlier
+- If a step feels too large, split it
+- Use Document "Clevai_Tech_Stack_Prefer_PR4260.md"
+
+Output format:
+- Ordered list of steps (Step 0, Step 1, Step 2, \u2026)
+- Keep steps small enough that each could be completed in under half a day
+- Output markdown document name: "IncrementalStepPlan-projectname"
+Wait for my confirmation before proceeding beyond step breakdown.
+
+# EACH STEP MUST INCLUDE 2 SUBSTEPS BELOW:
+
+## SUBSTEP 1:
+
+You are acting as a senior engineer doing disciplined incremental development.
+
+Rules:
+- One small change per step
+- No speculative features
+- Tests are mandatory
+- If tests fail, fix before proceeding
+- Ask for approval between steps
+
+Output format:
+1. Test cases
+2. Implementation
+3. How to run tests
+4. Known limitations
+5. Ask whether to continue
+
+
+## SUBSTEP 2:
+
+You are acting as a disciplined senior engineer practicing strict incremental development.
+
+The step description above [Step.....] is the SINGLE source of truth.
+
+Your task is to implement this step using automated tests and a tight feedback loop.
+
+GLOBAL RULES:
+- One step only; do not implement future steps
+- No speculative features or refactors
+- Do not change scope defined in the step
+- Minimal code to satisfy tests
+- Deterministic, headless, automatable tests only
+- Stop when exit criteria are met
+
+PROCESS (follow in order):
+
+1. TEST DESIGN
+   - Derive automated test cases directly from the step's "Test cases" and "Exit criteria"
+   - Separate:
+     - Backend/API tests
+     - Frontend/UI tests
+   - If tests are missing or ambiguous, ask before proceeding
+
+2. WRITE FAILING TESTS
+   - Write real, executable tests using the project's existing test framework(s)
+   - Tests must fail against the current codebase
+   - Do NOT write implementation code yet
+
+3. RUN TESTS
+   - Execute backend tests
+   - Execute frontend tests (headless)
+   - Capture and display failures
+
+4. IMPLEMENT MINIMUM CODE
+   - Implement ONLY what is required to make the failing tests pass
+   - Do not add extra endpoints, UI, logic, or configuration
+   - Prefer the smallest possible change
+
+5. FIX-ON-FAILURE LOOP
+   - If any test fails:
+     - Explain the root cause
+     - Apply the smallest fix
+     - Re-run the failed test
+   - Repeat until all tests pass
+
+6. FINAL VERIFICATION
+   - Re-run all backend tests
+   - Re-run all frontend tests
+   - Confirm success
+
+7. STOP AND REPORT
+   - Summarize what was added or changed
+   - List known limitations or shortcuts
+   - Explicitly ask whether to proceed to the next step
+
+STRICT PROHIBITIONS:
+- No feature expansion
+- No refactoring for "cleanliness"
+- No skipping test execution
+- No assumptions about future steps`,refs:["@docs/ArchitecturePack.md","@docs/Clevai_Tech_Stack_Prefer.md"],next:"T230"},
+
+T230:{code:"T230",name:"Audit ISP ⭐ Quality Gate #1",phase:"T2 — Architecture",type:"A",team:"ISP Quality Auditor + Software Architect",objective:"7-point audit moi ISP step. Gate truoc khi code.",preconditions:["ISP created (T220)","AP approved"],inputDocs:["IncrementalStepPlan.md","ArchitecturePack.md","Clevai_Tech_Stack_Prefer"],outputDocs:["IncrementalStepPlanAudited — enriched, ENRICH/BLOCK verdict"],skillFile:"sepo_skill/steps/T2/T230.md",gate:"Quality Gate #1 — 7 tieu chi truoc khi code",prompt:`# Vai tr\u00F2
+B\u1EA1n l\u00E0 ISP Quality Auditor. Nhi\u1EC7m v\u1EE5: ki\u1EC3m tra t\u1EEBng ISP step c\u00F3 \u0111\u1EE7 detail
+\u0111\u1EC3 m\u1ED9t AI coding agent (Claude Code) implement ch\u00EDnh x\u00E1c hay kh\u00F4ng.
+
+B\u1EA1n c\u00F3 kinh nghi\u1EC7m th\u1EF1c t\u1EBF v\u1EDBi c\u00E1c l\u1ED7i th\u01B0\u1EDDng g\u1EB7p khi ISP thi\u1EBFu detail:
+- AI vi\u1EBFt stub/placeholder thay v\u00EC code th\u1EADt
+- AI d\u00F9ng string concat thay v\u00EC library \u0111\u00FAng (xlsx, PDF)
+- AI implement FE nh\u01B0ng b\u1ECF s\u00F3t BE (ho\u1EB7c ng\u01B0\u1EE3c l\u1EA1i)
+- AI \u0111\u00E1nh Done nh\u01B0ng ch\u1EC9 verify 1 chi\u1EC1u
+- AI kh\u00F4ng bi\u1EBFt data source n\u1EB1m \u1EDF \u0111\u00E2u (table n\u00E0o, API n\u00E0o, h\u1EC7 th\u1ED1ng ngo\u00E0i n\u00E0o)
+- AI implement theo c\u00E1ch \u0111\u01A1n gi\u1EA3n nh\u1EA5t thay v\u00EC theo wireframe ch\u00EDnh x\u00E1c
+
+# Input
+
+## Architectural Pack (AP)
+\u0110\u00E2y l\u00E0 ngu\u1ED3n truth cho business logic, wireframe, algorithm.
+<AP>
+{Paste AP sections li\u00EAn quan \u2014 wireframe, algorithm, constraints}
+</AP>
+
+## ISP Steps file audit
+<ISP>
+
+
+## Tech stack
+<Clevai_Tech_Stack_Prefer>
+
+
+# Quy tr\u00ECnh audit
+
+V\u1EDBi M\u1ED6I ISP step, ki\u1EC3m tra 7 ti\u00EAu ch\u00ED d\u01B0\u1EDBi \u0111\u00E2y. M\u1ED7i ti\u00EAu ch\u00ED \u0111\u00E1nh: \u2705 C\u00F3 / \u274C Thi\u1EBFu
+
+## 7 TI\u00CAU CH\u00CD B\u1EAET BU\u1ED8C
+
+### 1. Data Source r\u00F5 r\u00E0ng
+- Ghi r\u00F5 table name + field name trong database
+- N\u1EBFu data t\u1EEB h\u1EC7 th\u1ED1ng ngo\u00E0i \u2192 ghi r\u00F5 t\u00EAn h\u1EC7 th\u1ED1ng, API endpoint, format response
+- N\u1EBFu data c\u1EA7n JOIN \u2192 ghi r\u00F5 JOIN condition
+- \u274C FAIL n\u1EBFu: ch\u1EC9 ghi "l\u1EA5y data t\u1EEB DB" m\u00E0 kh\u00F4ng n\u00F3i table/field n\u00E0o
+
+### 2. API Contract \u0111\u1EA7y \u0111\u1EE7
+- C\u00F3 HTTP method + endpoint path
+- C\u00F3 request params/body schema
+- C\u00F3 response schema (field name + type)
+- C\u00F3 error cases (4xx, 5xx)
+- \u274C FAIL n\u1EBFu: ch\u1EC9 ghi "t\u1EA1o API" m\u00E0 kh\u00F4ng c\u00F3 endpoint + schema
+
+### 3. UI Spec c\u1EE5 th\u1EC3
+- C\u00F3 wireframe reference (AP section number)
+- M\u00F4 t\u1EA3 layout: component n\u00E0o, v\u1ECB tr\u00ED n\u00E0o, format hi\u1EC3n th\u1ECB n\u00E0o
+- Format output r\u00F5 r\u00E0ng (v\u00ED d\u1EE5: "fullname (usiCode)" thay v\u00EC "hi\u1EC7n th\u00F4ng tin teacher")
+- Interaction: click/hover/select behavior
+- \u274C FAIL n\u1EBFu: ch\u1EC9 ghi "hi\u1EC3n th\u1ECB data" m\u00E0 kh\u00F4ng n\u00F3i format/layout
+
+### 4. Business Logic / Algorithm
+- C\u00F3 c\u00F4ng th\u1EE9c t\u00EDnh to\u00E1n (n\u1EBFu c\u00F3)
+- C\u00F3 threshold/mapping (n\u1EBFu c\u00F3)
+- C\u00F3 flow \u0111i\u1EC1u ki\u1EC7n (if/else logic)
+- Reference \u0111\u1EBFn AP algorithm number
+- \u274C FAIL n\u1EBFu: c\u00F3 t\u00EDnh to\u00E1n nh\u01B0ng kh\u00F4ng ghi c\u00F4ng th\u1EE9c c\u1EE5 th\u1EC3
+
+### 5. Acceptance Criteria d\u1EA1ng Checklist
+- M\u1ED7i criterion l\u00E0 1 c\u00E2u c\u00F3 th\u1EC3 verify TRUE/FALSE
+- Cover c\u1EA3 FE l\u1EABn BE (kh\u00F4ng ch\u1EC9 1 ph\u00EDa)
+- C\u00F3 test case c\u1EE5 th\u1EC3 v\u1EDBi data m\u1EABu
+- C\u00F3 edge case (empty state, error state, null value)
+- \u274C FAIL n\u1EBFu: kh\u00F4ng c\u00F3 acceptance criteria, ho\u1EB7c ch\u1EC9 c\u00F3 1 d\u00F2ng chung chung
+
+### 6. Library / Tool ch\u1EC9 \u0111\u1ECBnh (n\u1EBFu step c\u00F3 export/generate)
+- N\u1EBFu export Excel \u2192 ch\u1EC9 \u0111\u1ECBnh library (excelize cho Go, xlsx cho JS)
+- N\u1EBFu generate PDF \u2192 ch\u1EC9 \u0111\u1ECBnh library + font Vietnamese
+- N\u1EBFu upload file \u2192 ch\u1EC9 \u0111\u1ECBnh format, size limit, parse method
+- \u274C FAIL n\u1EBFu: c\u00F3 export/generate nh\u01B0ng kh\u00F4ng ch\u1EC9 \u0111\u1ECBnh library
+  (AI S\u1EBC d\u00F9ng string concat n\u1EBFu kh\u00F4ng ch\u1EC9 \u0111\u1ECBnh!)
+
+### 7. Dependencies & Sequence
+- Step n\u00E0y depend on step n\u00E0o kh\u00E1c?
+- Data input t\u1EEB step n\u00E0o?
+- C\u00F3 c\u1EA7n deploy/migration tr\u01B0\u1EDBc kh\u00F4ng?
+- \u274C FAIL n\u1EBFu: step c\u1EA7n data t\u1EEB feature kh\u00E1c ch\u01B0a implement m\u00E0 kh\u00F4ng ghi r\u00F5
+
+# Output format
+
+Tr\u1EA3 v\u1EC1 \u0111\u00FAng format sau:
+
+## B\u1EA3ng Audit T\u1ED5ng H\u1EE3p
+
+| Step | T\u00EAn | \u2460 Data | \u2461 API | \u2462 UI | \u2463 Logic | \u2464 AC | \u2465 Lib | \u2466 Deps | Verdict |
+|------|-----|--------|-------|------|---------|------|-------|--------|---------|
+| X.Y  | ... | \u2705/\u274C  | \u2705/\u274C | \u2705/\u274C| \u2705/\u274C  | \u2705/\u274C| \u2705/\u274C | \u2705/\u274C  | PASS/ENRICH/BLOCK |
+
+## Verdict rules:
+- **\u2705 PASS** (7/7 ti\u00EAu ch\u00ED \u0111\u1EA1t) \u2192 Step \u0111\u1EE7 detail, \u0111\u01B0a th\u1EB3ng v\u00E0o Claude Code
+- **\u26A0\uFE0F ENRICH** (c\u00F3 ti\u00EAu ch\u00ED thi\u1EBFu NH\u01AFNG t\u00ECm \u0111\u01B0\u1EE3c trong AP) \u2192 B\u1EA1n t\u1EF1 b\u1ED5 sung detail t\u1EEB AP, output step \u0111\u00E3 enrich
+- **\u274C BLOCK** (c\u00F3 ti\u00EAu ch\u00ED thi\u1EBFu V\u00C0 AP c\u0169ng kh\u00F4ng c\u00F3) \u2192 Li\u1EC7t k\u00EA C\u00C2U H\u1ECEI C\u1EE4 TH\u1EC2 c\u1EA7n user tr\u1EA3 l\u1EDDi
+
+## Chi ti\u1EBFt t\u1EEBng step
+
+### Step X.Y \u2014 [T\u00EAn] \u2192 [Verdict]
+
+**Thi\u1EBFu:**
+- [Li\u1EC7t k\u00EA ti\u00EAu ch\u00ED n\u00E0o thi\u1EBFu]
+
+**\u0110\u00E3 b\u1ED5 sung t\u1EEB AP:** (n\u1EBFu ENRICH)
+- [Th\u00F4ng tin \u0111\u00E3 t\u00ECm \u0111\u01B0\u1EE3c t\u1EEB AP sections n\u00E0o]
+
+**C\u00E2u h\u1ECFi cho user:** (n\u1EBFu BLOCK)
+- [C\u00E2u h\u1ECFi c\u1EE5 th\u1EC3, kh\u00F4ng chung chung]
+- V\u00ED d\u1EE5 \u0110\u00DAng: "Video URL n\u1EB1m \u1EDF table n\u00E0o? Hay t\u1EEB API h\u1EC7 th\u1ED1ng SCS? N\u1EBFu SCS th\u00EC endpoint l\u00E0 g\u00EC?"
+- V\u00ED d\u1EE5 SAI: "C\u1EA7n th\u00EAm th\u00F4ng tin v\u1EC1 video"
+
+## ISP Step \u0111\u00E3 Enrich (n\u1EBFu c\u00F3)
+
+V\u1EDBi m\u1ED7i step ENRICH, output l\u1EA1i step ho\u00E0n ch\u1EC9nh theo format ISP m\u1EABu,
+\u0111\u00E3 b\u1ED5 sung \u0111\u1EA7y \u0111\u1EE7 7 ti\u00EAu ch\u00ED. \u0110\u00E2y l\u00E0 b\u1EA3n s\u1EB5n s\u00E0ng \u0111\u01B0a v\u00E0o Claude Code.
+
+#Output file:
+ T\u1EA1o ra file : IncrementalStepPlanAudited_[VersionofArchitecturalPack]_[DateofArchitecturalPack]
+
+# L\u01B0u \u00FD quan tr\u1ECDng
+
+1. KH\u00D4NG BAO GI\u1ECC \u0111\u00E1nh PASS cho step ch\u1EC9 c\u00F3 t\u00EAn m\u00E0 kh\u00F4ng c\u00F3 detail
+   (\u0111\u00E2y l\u00E0 nguy\u00EAn nh\u00E2n 62% bugs trong d\u1EF1 \u00E1n th\u1EF1c t\u1EBF)
+
+2. N\u1EBFu step c\u00F3 export/generate m\u00E0 kh\u00F4ng ch\u1EC9 \u0111\u1ECBnh library \u2192
+   t\u1EF1 \u0111\u1ED9ng BLOCK ho\u1EB7c ENRICH b\u1EB1ng c\u00E1ch th\u00EAm library recommendation
+
+3. N\u1EBFu step c\u00F3 c\u1EA3 FE + BE m\u00E0 acceptance criteria ch\u1EC9 cover 1 ph\u00EDa \u2192
+   t\u1EF1 \u0111\u1ED9ng ENRICH th\u00EAm criteria cho ph\u00EDa c\u00F2n l\u1EA1i
+
+4. N\u1EBFu step reference "theo wireframe" m\u00E0 kh\u00F4ng ghi format c\u1EE5 th\u1EC3 \u2192
+   t\u00ECm trong AP wireframe section v\u00E0 ENRICH format r\u00F5 r\u00E0ng
+   (v\u00ED d\u1EE5: kh\u00F4ng ch\u1EA5p nh\u1EADn "hi\u1EC7n teacher info", ph\u1EA3i l\u00E0 "fullname (usiCode)")
+
+5. V\u1EDBi m\u1ED7i step BLOCK, c\u00E2u h\u1ECFi ph\u1EA3i \u0111\u1EE7 c\u1EE5 th\u1EC3 \u0111\u1EC3 user tr\u1EA3 l\u1EDDi trong 1-2 c\u00E2u
+   Kh\u00F4ng h\u1ECFi chung chung ki\u1EC3u "c\u1EA7n th\u00EAm detail"`,refs:["@docs/IncrementalStepPlan.md","@docs/ArchitecturePack.md"],next:"T310"},
+
+T310:{code:"T310",name:"Build — Implement 🔄",phase:"T3 — Build",type:"A/B",team:"Senior Engineer + Code Reviewer",objective:"TDD implement 1 ISP step. Lap cho moi step.",preconditions:["ISP Audited","Prev steps done","Dev environment ready"],inputDocs:["ISP Audited + AP section"],outputDocs:["Tests passing","Code implemented","npm run check OK"],skillFile:"sepo_skill/steps/T3/T300-001/T310-001.md",prompt:`You are acting as a senior engineer doing disciplined incremental development.
+
+Rules:
+- One small change per step
+- No speculative features
+- Tests are mandatory
+- If tests fail, fix before proceeding
+- Ask for approval between steps
+
+Output format:
+1. Test cases
+2. Implementation
+3. How to run tests
+4. Known limitations
+5. Ask whether to continue
+
+Current step:
+[describe the smallest possible unit of functionality]`,refs:["@docs/IncrementalStepPlanAudited.md","@docs/ArchitecturePack.md"],next:"T320"},
+
+T320:{code:"T320",name:"Test — Verify 🔄",phase:"T3 — Build",type:"A",team:"QA Engineer + Security Tester",objective:"Verify step: happy path, edge cases, error handling, security.",preconditions:["T310 done","Build passes"],inputDocs:["ISP step + test criteria","Code"],outputDocs:["Test report","Edge cases documented"],skillFile:"sepo_skill/steps/T3/T300-001/T320-001.md",prompt:`You are acting as a disciplined senior engineer practicing strict incremental development.
+
+The step description above [Step.....] is the SINGLE source of truth.
+
+Your task is to implement this step using automated tests and a tight feedback loop.
+
+GLOBAL RULES:
+- One step only; do not implement future steps
+- No speculative features or refactors
+- Do not change scope defined in the step
+- Minimal code to satisfy tests
+- Deterministic, headless, automatable tests only
+- Stop when exit criteria are met
+
+PROCESS (follow in order):
+
+1. TEST DESIGN
+   - Derive automated test cases directly from the step's "Test cases" and "Exit criteria"
+   - Separate:
+     - Backend/API tests
+     - Frontend/UI tests
+   - If tests are missing or ambiguous, ask before proceeding
+
+2. WRITE FAILING TESTS
+   - Write real, executable tests using the project's existing test framework(s)
+   - Tests must fail against the current codebase
+   - Do NOT write implementation code yet
+
+3. RUN TESTS
+   - Execute backend tests
+   - Execute frontend tests (headless)
+   - Capture and display failures
+
+4. IMPLEMENT MINIMUM CODE
+   - Implement ONLY what is required to make the failing tests pass
+   - Do not add extra endpoints, UI, logic, or configuration
+   - Prefer the smallest possible change
+
+5. FIX-ON-FAILURE LOOP
+   - If any test fails:
+     - Explain the root cause
+     - Apply the smallest fix
+     - Re-run the failed test
+   - Repeat until all tests pass
+
+6. FINAL VERIFICATION
+   - Re-run all backend tests
+   - Re-run all frontend tests
+   - Confirm success
+
+7. STOP AND REPORT
+   - Summarize what was added or changed
+   - List known limitations or shortcuts
+   - Explicitly ask whether to proceed to the next step
+
+STRICT PROHIBITIONS:
+- No feature expansion
+- No refactoring for "cleanliness"
+- No skipping test execution
+- No assumptions about future steps`,refs:["@docs/IncrementalStepPlanAudited.md"],next:"T310 (next) or T380"},
+
+T380:{code:"T380",name:"Finish — Commit & Push",phase:"T3 — Build",type:"A",team:"DevOps Engineer + Technical Writer",objective:"Commit, push git, tao MR.",preconditions:["All ISP steps done","Tests pass"],inputDocs:["vault.md","GIT-DB-Structure.md"],outputDocs:["Code on Git","MR created","CI passes"],skillFile:"sepo_skill/steps/T3/T380.md",prompt:`\u0110\u1ECDc file vault.md \u0111\u1EC3 l\u1EA5y credential cho git,
+1. D\u1EF1a v\u00E0o quy lu\u1EADt \u0111\u1EB7t m\u00E3 v\u00E0 t\u00EAn h\u1EC7 th\u1ED1ng trong file GIT-DB-Structure.md.
+- T\u1EEB \u0111\u1EA7u ti\u00EAn l\u00E0 \u0111\u1ED1i t\u01B0\u1EE3ng ng\u01B0\u1EDDi d\u00F9ng ch\u00EDnh (VD: Student, Teacher, Parent, Sale, ...)
+- T\u1EEB th\u1EE9 2 l\u00E0 ch\u1EE9c n\u0103ng ch\u00EDnh h\u1EC7 th\u1ED1ng (VD: Tutoring, Education, Report, Compensation, ....)
+- T\u1EEB th\u1EE9 3 l\u00E0 giao di\u1EC7n ch\u00EDnh c\u1EE7a h\u1EC7 th\u1ED1ng (VD: Web, App, Portal, ...)
+M\u00E3 \u0111\u01B0\u1EE3c gh\u00E9p t\u1EEB nh\u1EEFng ch\u1EEF c\u00E1i \u0111\u1EA7u c\u1EE7a c\u00E1c t\u00EAn.
+H\u00E3y g\u1EE3i \u00FD 3 m\u00E3 v\u00E0 t\u00EAn cho \u0111\u1EC3 t\u00F4i ch\u1ECDn
+2. Merge code backend v\u00E0 frontend v\u00E0o chung 1 repo v\u1EDBi name l\u1EA5y t\u1EEB b\u01B0\u1EDBc 1
+3.  push code trong repo chung n\u00E0y l\u00EAn git n\u00E0y https://gitlab.clevai.vn/fe/[repo name]
+4. T\u1EA1o Merge Request l\u00EAn staging-c
+5. Fix CI/CD build fail
+6. T\u1EF1 x\u1EED l\u00FD Vault
+7. Check code local v\u00E0 push
+8. chuy\u1EC3n sang nh\u00E1nh staging-c \u0111\u1EC3 l\u00E0m vi\u1EC7c
+9. T\u1EA1o domain theo t\u00EAn \u0111\u00E3 ch\u1ECDn v\u1EDBi format : [repo name].mikai.tech`,refs:["@docs/vault.md","@docs/GIT-DB-Structure.md"],next:"T390"},
+
+T390:{code:"T390",name:"Post-Audit ⭐ Quality Gate #2",phase:"T3 — Build",type:"A",team:"Software Architect + Code Auditor + QA Lead",objective:"So sanh code da build vs ArchitecturePack: tim discrepancies, gaps, issues.",preconditions:["Code pushed (T380)","AP co san"],inputDocs:["ArchitecturePack.md","IncrementalStepPlan.md","Codebase","layerevent.md"],outputDocs:["PostAudit report — AP vs Code matrix"],skillFile:"sepo_skill/steps/T3/T390.md",gate:"Quality Gate #2 — Code phai match AP",prompt:`You are a senior software architect and code auditor.
+
+Your task is to perform a post-implementation audit.
+
+MANDATORY:
+- You MUST read and strictly follow rules defined in CLAUDE.md
+- You MUST NOT ignore any constraints or conventions from CLAUDE.md
+
+INPUT:
+1. Ready deeply [Architectural Pack_version_date]
+2.  Ready deeply [IncrementalStepPlan_version_date]
+3. Source code (current implementation)
+4. layerevent.md \u2192 defines classification rules for task types (A/B/C)
+
+TASK:
+
+1. COMPARISON AUDIT
+- Compare:
+  + Architectural Pack vs Source Code
+  + IncrementalStepPlan vs Source Code
+- Identify:
+  + Missing components (planned but not implemented)
+  + Extra components (implemented but not defined)
+  + Incorrect implementations (violating design or CLAUDE.md)
+
+2. CLASSIFICATION (MANDATORY)
+- Based on layerevent.md:
+  + Classify each finding into A / B / C
+  + Follow EXACT definitions from layerevent.md
+
+3. COMPLIANCE CHECK
+- Validate code against CLAUDE.md:
+  + Naming conventions
+  + Architecture rules
+  + Layer boundaries
+  + Any defined constraints
+
+4. API CONTRACT AUDIT (MANDATORY \u2014 do NOT skip)
+- For EVERY endpoint defined in AP:
+  a) Identify the FE payload type
+  b) Identify the BE model
+  c) Compare FIELD BY FIELD:
+     | Field | FE Type | BE Type | Match? |
+     - Check field names (exact string match, snake_case vs camelCase)
+     - Check field types (string vs str, number vs float, array vs list)
+     - Check required vs optional (FE optional? vs BE Optional[])
+     - Check request location (POST body vs query param vs path param)
+     - Check response field names between FE expected type and BE response model
+
+  d) Flag as "Incorrect" with Impact: High if ANY of these occur:
+     - FE sends a field BE does not expect
+     - BE requires a field FE does not send
+     - Field name mismatch
+     - Field type mismatch (e.g., FE sends string[], BE expects float)
+     - FE sends body but BE reads query param (or vice versa)
+     - FE expects a response field that BE doesn't return
+
+5. OUTPUT FORMAT
+
+Return a structured audit report:
+
+SECTION 1: SUMMARY
+- Total items:
+  + Missing:
+  + Extra:
+  + Incorrect:
+- Overall status: PASS / WARNING / FAIL
+
+SECTION 2: DETAILED AUDIT LIST
+
+For each item:
+
+- ID: <auto incremental>
+- Type: Missing / Extra / Incorrect
+- Classification: A / B / C
+- Component: <module / service / table / API / class>
+- Description: <what is the issue>
+- Expected (from Architecture/Plan): <expected behavior/design>
+- Actual (from Code): <what is implemented>
+- Violation:
+  + ArchitecturePack / IncrementalStepPlan / CLAUDE.md
+- Impact: <low / medium / high>
+- Recommendation: <what to fix>
+
+SECTION 3: API CONTRACT AUDIT
+
+For each endpoint in AP:
+
+| # | Endpoint | Method | FE Interface (file:line) | BE Model (file:line) | Status | Mismatched Fields |
+|---|----------|--------|--------------------------|----------------------|--------|------------------|
+| 1 | /api/cascade/init | POST | CascadeInitPayload (useCascade.ts:127) | CascadeInitRequest (cascade_models.py:134) | \u2705 MATCH | \u2014 |
+| 2 | /api/cascade/allocate | POST | CascadeAllocatePayload (useCascade.ts:48) | CascadeAllocateRequest (cascade_models.py:178) | \u274C MISMATCH | parent_id missing, to_entity vs scope_value |
+| ... | | | | | | |
+
+For each MISMATCH, add a sub-entry:
+- FE sends: <list fields with types>
+- BE expects: <list fields with types>
+- Delta: <list exact differences>
+- Fix: <which side to change and how>
+
+SECTION 4: COVERAGE CHECK
+
+- List all major components from:
+  + Architectural Pack
+  + IncrementalStepPlan
+
+Mark each as:
+- IMPLEMENTED
+- MISSING
+- PARTIAL
+
+SECTION 5: FINAL VERDICT
+
+- Is implementation aligned with architecture? YES / NO
+- Critical issues that must be fixed before release
+
+CONSTRAINTS:
+- Do NOT assume anything not present in inputs
+- Be strict and precise (audit mindset)
+- Do NOT explain theory
+- Focus only on gaps and mismatches`,refs:["@docs/ArchitecturePack.md","@docs/layerevent.md"],next:"T411"},
+
+T411:{code:"T411",name:"Run Migration",phase:"T4 — Deploy",type:"B",team:"Database Architect + DevOps Engineer",objective:"Chay database migration scripts tren target environment.",preconditions:["migration.sql da co (tu T211)","Target DB accessible"],inputDocs:["migration.sql","vault.md"],outputDocs:["Schema migrated","No data loss"],skillFile:"sepo_skill/steps/T4/T410/T411.md",prompt:`Step 1 Migration:
+
+ "You are a senior database architect specialized in safe production migrations (MySQL 8.0).
+
+Your task is to generate a database migration script.
+
+INPUT:
+
+1. Architectural Pack : architecturepack_TEP230_V4.3_25032026
+
+2. IncrementalStepPlan: IncrementalStepPlan-TEP230V4.3_26032026
+
+3. Vault file \u2192 database connection info (schema name must be extracted)
+
+4. Current database schema \u2192 actual structure of tables, columns, indexes
+
+
+
+TASK:
+
+- Read Architectural Pack deeply and IncrementalStepPlan to find all migration step needed.
+
+- Compare new requirements with the current schema
+
+- Identify necessary changes:
+
+  + Add / alter columns
+
+  + Create new tables
+
+  + Add indexes / constraints
+
+- DO NOT remove or drop anything unless explicitly required
+
+- Ensure backward compatibility and data safety
+
+
+
+OUTPUT:
+
+Return ONLY a single SQL file named \`migration.sql\`
+
+
+
+STRICT FORMAT REQUIREMENTS:
+
+
+
+1. Header:
+
+- Include migration name, version, database name, date
+
+- Example style:
+
+  -- =====================================================
+
+  -- <Project/Module> Migration <version>
+
+  -- Database: <db_name>
+
+  -- Date: <dd/mm/yyyy>
+
+  -- =====================================================
+
+
+
+2. Each change MUST be grouped into STEPS:
+
+- Step title format:
+
+  -- =====================================================
+
+  -- Step X: <description>
+
+  -- =====================================================
+
+
+
+3. BEFORE each schema change:
+
+- Provide a CHECK query using information_schema
+
+- Example:
+
+  -- CHECK: SELECT COUNT(*) FROM information_schema.COLUMNS WHERE ...
+
+
+
+4. Conditional execution:
+
+- DO NOT use IF statements
+
+- Instead:
+
+  + Write comment: "-- If result = 0, run:"
+
+  + Then provide SQL
+
+
+
+5. SQL rules:
+
+- Compatible with MySQL 8.0
+
+- Prefer safe operations:
+
+  + ADD COLUMN with DEFAULT NULL
+
+  + CREATE TABLE IF NOT EXISTS
+
+- Always add indexes if relevant
+
+- Use meaningful index names
+
+
+
+6. Comments:
+
+- Explain purpose of each change clearly
+
+- Keep concise, production-style
+
+
+
+7. Verification section (MANDATORY at the end):
+
+- Provide queries to verify all changes:
+
+  + Column existence
+
+  + Table existence
+
+  + Index existence (if needed)
+
+
+
+8. Idempotency:
+
+- Script should be safe to re-check manually
+
+- Avoid destructive operations
+
+
+
+9. Output constraints:
+
+- DO NOT include explanations outside SQL
+
+- DO NOT include markdown
+
+- ONLY raw SQL text
+
+
+
+IF no changes are required:
+
+Return exactly:
+
+No migration needed
+
+----------`,refs:["@docs/migration.sql","@docs/vault.md"],next:"T412"},
+
+T412:{code:"T412",name:"Deploy Local & Smoke",phase:"T4 — Deploy",type:"A",team:"DevOps Engineer + QA Engineer",objective:"Deploy app len local, chay smoke test de verify basic functionality.",preconditions:["T411 done"],inputDocs:["Codebase",".env"],outputDocs:["App running","Smoke pass"],skillFile:"sepo_skill/steps/T4/T410/T412.md",prompt:`Step 1: Migration:
+ "You are a senior database architect specialized in safe production migrations (MySQL 8.0).
+Your task is to generate a database migration script.
+INPUT:
+1. Architectural Pack : [architecturepack_version_date]
+2. IncrementalStepPlan: [IncrementalStepPlan_version_date]
+3. Vault file \u2192 database connection info (schema name must be extracted)
+4. Current database schema \u2192 actual structure of tables, columns, indexes
+
+TASK:
+- Read Architectural Pack deeply and IncrementalStepPlan to find all migration step needed.
+- Compare new requirements with the current schema
+- Identify necessary changes:
+  + Add / alter columns
+  + Create new tables
+  + Add indexes / constraints
+- DO NOT remove or drop anything unless explicitly required
+- Ensure backward compatibility and data safety
+
+OUTPUT:
+Return ONLY a single SQL file named \`migration.sql\`
+
+STRICT FORMAT REQUIREMENTS:
+
+1. Header:
+- Include migration name, version, database name, date
+- Example style:
+  -- =====================================================
+  -- <Project/Module> Migration <version>
+  -- Database: <db_name>
+  -- Date: <dd/mm/yyyy>
+  -- =====================================================
+
+2. Each change MUST be grouped into STEPS:
+- Step title format:
+  -- =====================================================
+  -- Step X: <description>
+  -- =====================================================
+
+3. BEFORE each schema change:
+- Provide a CHECK query using information_schema
+- Example:
+  -- CHECK: SELECT COUNT(*) FROM information_schema.COLUMNS WHERE ...
+
+4. Conditional execution:
+- DO NOT use IF statements
+- Instead:
+  + Write comment: "-- If result = 0, run:"
+  + Then provide SQL
+
+5. SQL rules:
+- Compatible with MySQL 8.0
+- Prefer safe operations:
+  + ADD COLUMN with DEFAULT NULL
+  + CREATE TABLE IF NOT EXISTS
+- Always add indexes if relevant
+- Use meaningful index names
+
+6. Comments:
+- Explain purpose of each change clearly
+- Keep concise, production-style
+
+7. Verification section (MANDATORY at the end):
+- Provide queries to verify all changes:
+  + Column existence
+  + Table existence
+  + Index existence (if needed)
+
+8. Idempotency:
+- Script should be safe to re-check manually
+- Avoid destructive operations
+
+9. Output constraints:
+- DO NOT include explanations outside SQL
+- DO NOT include markdown
+- ONLY raw SQL text
+
+IF no changes are required:
+Return exactly:
+No migration needed
+
+----------
+Step 2: Deploy app l\u00EAn localhost, t\u1EA1o c\u00E1c file env t\u1EEB vault n\u1EBFu c\u1EA7n.`,refs:["@docs/vault.md"],next:"T413"},
+
+T413:{code:"T413",name:"Push Git & CI",phase:"T4 — Deploy",type:"A",team:"DevOps Engineer + Git Specialist",objective:"Commit va push code len remote repository.",preconditions:["T412 pass"],inputDocs:["vault.md","GIT-DB-Structure.md"],outputDocs:["Code on remote","CI passes"],skillFile:"sepo_skill/steps/T4/T410/T413.md",prompt:`H\u1ECFi ng\u01B0\u1EDDi d\u00F9ng \u0111ang thu\u1ED9c "Usecase 1 :N\u1EBFu d\u1EF1 \u00E1n x\u00E2y m\u1EDBi l\u1EA7n \u0111\u1EA7u ti\u00EAn" hay thu\u1ED9c "Usecase 2: N\u1EBFu d\u1EF1 \u00E1n n\u00E0y l\u00E0 s\u1EEDa h\u1EC7 th\u1ED1ng \u0111ang c\u00F3" th\u00EC s\u1EBD s\u1EED d\u1EE5ng prompt t\u01B0\u01A1ng \u1EE9ng \u1EDF ph\u00EDa d\u01B0\u1EDBi \u0111\u00E2y:
+Usecase 1: N\u1EBFu d\u1EF1 \u00E1n x\u00E2y m\u1EDBi l\u1EA7n \u0111\u1EA7u ti\u00EAn th\u00EC s\u1EED d\u1EE5ng prompt
+ "\u0110\u1ECDc file vault.md \u0111\u1EC3 l\u1EA5y credential cho git,
+1. D\u1EF1a v\u00E0o quy lu\u1EADt \u0111\u1EB7t m\u00E3 v\u00E0 t\u00EAn h\u1EC7 th\u1ED1ng trong file GIT-DB-Structure.md.
+- T\u1EEB \u0111\u1EA7u ti\u00EAn l\u00E0 \u0111\u1ED1i t\u01B0\u1EE3ng ng\u01B0\u1EDDi d\u00F9ng ch\u00EDnh (VD: Student, Teacher, Parent, Sale, ...)
+- T\u1EEB th\u1EE9 2 l\u00E0 ch\u1EE9c n\u0103ng ch\u00EDnh h\u1EC7 th\u1ED1ng (VD: Tutoring, Education, Report, Compensation, ....)
+- T\u1EEB th\u1EE9 3 l\u00E0 giao di\u1EC7n ch\u00EDnh c\u1EE7a h\u1EC7 th\u1ED1ng (VD: Web, App, Portal, ...)
+M\u00E3 \u0111\u01B0\u1EE3c gh\u00E9p t\u1EEB nh\u1EEFng ch\u1EEF c\u00E1i \u0111\u1EA7u c\u1EE7a c\u00E1c t\u00EAn.
+H\u00E3y g\u1EE3i \u00FD 3 m\u00E3 v\u00E0 t\u00EAn cho \u0111\u1EC3 t\u00F4i ch\u1ECDn
+2. Merge code backend v\u00E0 frontend v\u00E0o chung 1 repo v\u1EDBi name l\u1EA5y t\u1EEB b\u01B0\u1EDBc 1
+3.  push code trong repo chung n\u00E0y l\u00EAn git n\u00E0y https://gitlab.clevai.vn/fe/[repo name]
+4. T\u1EA1o Merge Request l\u00EAn staging-c
+5. Th\u00F4ng b\u00E1o tr\u1EA1ng th\u00E1i khi deploy xong
+
+Usecase 2: N\u1EBFu d\u1EF1 \u00E1n n\u00E0y l\u00E0 s\u1EEDa h\u1EC7 th\u1ED1ng \u0111ang c\u00F3 th\u00EC s\u1EED d\u1EE5ng prompt n\u00E0y
+"1. Tr\u01B0\u1EDBc khi push code h\u00E3y pull code t\u1EEB repo v\u1EC1 \u0111\u1EC5 gi\u1EEF code lu\u00F4n up to date
+2. Sau khi c\u00F3 update code m\u1EDBi th\u00EC commit v\u00E0 \u0111\u1EA9y code l\u00EAn  \u1EDF nh\u00E1nh staging-c
+3. Th\u00F4ng b\u00E1o tr\u1EA1ng th\u00E1i khi deploy xong"`,refs:["@docs/vault.md"],next:"T414"},
+
+T414:{code:"T414",name:"Deploy Staging",phase:"T4 — Deploy",type:"A",team:"DevOps Engineer + SRE",objective:"Deploy app len staging server de team test.",preconditions:["T413 CI pass"],inputDocs:["vault.md"],outputDocs:["Staging live","Health OK"],skillFile:"sepo_skill/steps/T4/T410/T414.md",prompt:`H\u1ECFi ng\u01B0\u1EDDi d\u00F9ng \u0111ang thu\u1ED9c "Usecase 1 :N\u1EBFu d\u1EF1 \u00E1n x\u00E2y m\u1EDBi l\u1EA7n \u0111\u1EA7u ti\u00EAn" hay thu\u1ED9c "Usecase 2: N\u1EBFu d\u1EF1 \u00E1n n\u00E0y l\u00E0 s\u1EEDa h\u1EC7 th\u1ED1ng \u0111ang c\u00F3" th\u00EC s\u1EBD s\u1EED d\u1EE5ng prompt t\u01B0\u01A1ng \u1EE9ng \u1EDF ph\u00EDa d\u01B0\u1EDBi \u0111\u00E2y:
+
+Usecase 1: N\u1EBFu d\u1EF1 \u00E1n x\u00E2y m\u1EDBi l\u1EA7n \u0111\u1EA7u ti\u00EAn th\u00EC s\u1EED d\u1EE5ng prompt
+ "\u0110\u1ECDc file vault.md \u0111\u1EC3 l\u1EA5y credential cho git,
+1. Fix CI/CD build fail
+2. T\u1EF1 x\u1EED l\u00FD Vault
+3. T\u1EA1o domain theo t\u00EAn \u0111\u00E3 ch\u1ECDn v\u1EDBi format : [repo name].mikai.tech"
+
+Usecase 2: N\u1EBFu d\u1EF1 \u00E1n n\u00E0y l\u00E0 s\u1EEDa h\u1EC7 th\u1ED1ng \u0111ang c\u00F3 th\u00EC kh\u00F4ng c\u1EA7n l\u00E0m g\u00EC th\u00EAm.`,refs:["@docs/vault.md"],next:"T415"},
+
+T415:{code:"T415",name:"Staging Checkpoint",phase:"T4 — Deploy",type:"A",team:"Technical Writer + DevOps Engineer",objective:"Luu checkpoint staging: version commits, DB schema snapshot.",preconditions:["T414 success"],inputDocs:["Git log","Staging DB"],outputDocs:["STG_VersionCommit.md","STG_DB_Schema.md"],skillFile:"sepo_skill/steps/T4/T410/T415.md",prompt:`T\u1ED5ng h\u1EE3p t\u1EA5t c\u1EA3 c\u00E1c commit git/repo v\u00E0o file STG_VersionCommit.md v\u1EDBi t\u00EAn th\u00EAm h\u1EADu t\u1ED1 {version}_{date} (v3_190326)
+Export ra DB schema ra file : STG_DB_Schema_{version}_{date}`,refs:["@docs/vault.md"],next:"T421"},
+
+T421:{code:"T421",name:"Prep Test Data",phase:"T4 — UAT",type:"A",team:"QA Lead + Test Data Engineer",objective:"Chuan bi test data va viet test cases tu AP specs cho UAT.",preconditions:["Staging deployed"],inputDocs:["ArchitecturePack.md","Staging URL"],outputDocs:["Test cases","Test data ready"],skillFile:"sepo_skill/steps/T4/T420/T421.md",prompt:"Ban la team chuyen gia gom QA Lead + Test Data Engineer.\nNhiem vu: Chuan bi test data va viet test cases tu AP specs cho UAT.\nHay thuc hien theo Execution Procedure o tren.",refs:["@docs/ArchitecturePack.md"],next:"T422"},
+
+T422:{code:"T422",name:"Execute UAT & Feedback",phase:"T4 — UAT",type:"A",team:"QA Tester + UX Reviewer",objective:"Thuc hien UAT, ghi nhan bugs va feedback.",preconditions:["T421 done"],inputDocs:["Test cases","T720_TestFeedback_Template"],outputDocs:["TestFeedback_{date}.xlsx"],skillFile:"sepo_skill/steps/T4/T420/T422.md",prompt:`Download v\u00E0 s\u1EED d\u1EE5ng file T720_TestFeedback_Template \u0111\u1EC3 \u0111i\u1EC1n th\u00F4ng tin UAT`,refs:["@docs/T720_TestFeedback_Template.xlsx"],next:"T423"},
+
+T423:{code:"T423",name:"Classify Feedback A/B/C",phase:"T4 — UAT",type:"A",team:"QA Lead + Product Manager + Software Architect",objective:"Phan loai moi feedback item theo A/B/C de prioritize fixes.",preconditions:["T422 done"],inputDocs:["TestFeedback.xlsx","layerevent.md"],outputDocs:["Classified: A (UI) / B (Logic) / C (Perf)"],skillFile:"sepo_skill/steps/T4/T420/T423.md",prompt:`1. \u0110\u1ECDc k\u0129 file [T720_TestFeedback_Template] v\u00E0 m\u00F4 t\u1EA3 l\u1EA1i hi\u1EC3u bi\u1EBFt c\u1EE7a b\u1EA1n v\u1EC1 c\u00E1c bug v\u00E0 feature \u0111\u00F3
+2. \u0110\u01B0a ra gi\u1EA3i ph\u00E1p
+3. N\u1EBFu c\u00E1c bug v\u00E0 feature ch\u01B0a r\u00F5 r\u00E0ng th\u00EC h\u00E3y h\u1ECFi l\u1EA1i, kh\u00F4ng \u0111\u01B0\u1EE3c suy di\u1EC5n v\u00E0 t\u1EF1 b\u1ECBa gi\u1EA3i ph\u00E1p
+4. S\u1EED d\u1EE5ng claude.md`,refs:["@docs/layerevent.md"],next:"T431/T432/T433"},
+
+T431:{code:"T431",name:"Fix A-type (UI/API)",phase:"T4 — Fix",type:"A",team:"Frontend Developer + UX Designer",objective:"Fix A-type feedback: UI changes, styling, layout adjustments.",preconditions:["T423 done","A items exist"],inputDocs:["A-type feedback","layerevent.md"],outputDocs:["A items fixed"],skillFile:"sepo_skill/steps/T4/T430/T431.md",prompt:`Task classification
+    - H\u00E3y \u0111\u1ECDc file [layerevent.md] \u0111\u1EC3 ph\u00E2n lo\u1EA1i Task do user cung c\u1EA5p theo ti\u00EAu ch\u00ED sau:
+    - Lo\u1EA1i A: N\u1EBFu ch\u1EC9 ch\u1EC9nh s\u1EEDa UI, API, kh\u00F4ng s\u1EEDa Entity Schema
+    -Lo\u1EA1i B: N\u1EBFu c\u00F3 s\u1EEDa Entity Schema, nh\u01B0ng kh\u00F4ng \u0111\u1ECDc vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer Event v\u00E0 Event Details, v\u00E0 kh\u00F4ng vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer CalculateKR v\u00E0 ExtractEvent
+    -Lo\u1EA1i C: N\u1EBFu c\u00F3 s\u1EEDa, \u0111\u1ECDc, vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer Event v\u00E0 Event Details, ho\u1EB7c s\u1EEDa, vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer CalculateKR v\u00E0 ExtractEvent
+
+L\u01B0u \u00FD:
+N\u1EBFu Task lo\u1EA1i B, c\u1EA7n b\u00E1o cho POSUP \u0111\u1EC3 duy\u1EC7t Architecture Pack tr\u01B0\u1EDBc khi th\u1EF1c thi
+N\u1EBFu Task lo\u1EA1i C, c\u1EA7n b\u00E1o cho POSUP v\u00E0 ARCH \u0111\u1EC3 duy\u1EC7t Architecture Pack tr\u01B0\u1EDBc khi th\u1EF1c thi`,refs:["@docs/TestFeedback.xlsx","@docs/layerevent.md"],next:"Re-deploy T410"},
+
+T432:{code:"T432",name:"Fix B-type (Logic) ⚠️",phase:"T4 — Fix",type:"B",team:"Backend Developer + Business Analyst",objective:"Fix B-type feedback: business logic, API, data processing changes. POSUP approval needed.",preconditions:["T423 done","POSUP approved"],inputDocs:["B-type feedback","ArchitecturePack.md","layerevent.md"],outputDocs:["B items fixed","Schema updated if needed"],skillFile:"sepo_skill/steps/T4/T430/T432.md",prompt:`Task classification
+    - H\u00E3y \u0111\u1ECDc file [layerevent.md] \u0111\u1EC3 ph\u00E2n lo\u1EA1i Task do user cung c\u1EA5p theo ti\u00EAu ch\u00ED sau:
+    - Lo\u1EA1i A: N\u1EBFu ch\u1EC9 ch\u1EC9nh s\u1EEDa UI, API, kh\u00F4ng s\u1EEDa Entity Schema
+    -Lo\u1EA1i B: N\u1EBFu c\u00F3 s\u1EEDa Entity Schema, nh\u01B0ng kh\u00F4ng \u0111\u1ECDc vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer Event v\u00E0 Event Details, v\u00E0 kh\u00F4ng vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer CalculateKR v\u00E0 ExtractEvent
+    -Lo\u1EA1i C: N\u1EBFu c\u00F3 s\u1EEDa, \u0111\u1ECDc, vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer Event v\u00E0 Event Details, ho\u1EB7c s\u1EEDa, vi\u1EBFt c\u00E1c b\u1EA3ng thu\u1ED9c Layer CalculateKR v\u00E0 ExtractEvent
+
+L\u01B0u \u00FD:
+N\u1EBFu Task lo\u1EA1i B, c\u1EA7n b\u00E1o cho POSUP \u0111\u1EC3 duy\u1EC7t Architecture Pack tr\u01B0\u1EDBc khi th\u1EF1c thi
+N\u1EBFu Task lo\u1EA1i C, c\u1EA7n b\u00E1o cho POSUP v\u00E0 ARCH \u0111\u1EC3 duy\u1EC7t Architecture Pack tr\u01B0\u1EDBc khi th\u1EF1c thi`,refs:["@docs/ArchitecturePack.md","@docs/layerevent.md"],next:"Re-deploy T410"},
+
+T433:{code:"T433",name:"Fix C-type (Perf) ⚠️⚠️",phase:"T4 — Fix",type:"C",team:"Perf Engineer + Architect",objective:"Performance + core layer changes. POSUP + ARCH approval required.",preconditions:["T423 done","POSUP + ARCH approved"],inputDocs:["C-type feedback","AP","layerevent.md"],outputDocs:["Perf improved","Core stable"],skillFile:"sepo_skill/steps/T4/T430/T433.md",prompt:`Ban la SEPO Process Orchestrator. Phase T433 (Execute C Tasks - Performance Optimization) can thuc hien cac sub-steps sau:
+[list sub-steps]
+Hay bat dau voi step dau tien.`,refs:["@docs/ArchitecturePack.md","@docs/layerevent.md"],next:"Re-deploy T410"},
+
+T510:{code:"T510",name:"Deploy Production",phase:"T5 — Production",type:"A",team:"DevOps Engineer + SRE + Database Architect",objective:"Deploy app len production environment.",preconditions:["UAT pass","All critical bugs fixed","Staging verified"],inputDocs:["vault.md","migration.sql (if any)"],outputDocs:["App live","Health check pass"],skillFile:"sepo_skill/steps/T5/T510.md",prompt:`- N\u1EBFu database c\u00F3 change th\u00EC h\u00E3y t\u1ED5ng h\u1EE3p t\u1EA5t c\u1EA3 c\u00E1c change li\u00EAn quan \u0111\u1EBFn database v\u00E0o 1 file changedb.sql
+- N\u1EBFu c\u00F3 b\u1ED5 sung th\u00EAm key ho\u1EB7c token... th\u00EC h\u00E3y t\u1ED5ng h\u1EE3p t\u1EA5t c\u1EA3 c\u00E1c key \u0111\u00F3 v\u00E0o file changevault.md
+- T\u1EA1o merge request t\u1EEB nh\u00E1nh code hi\u1EC7n t\u1EA1i v\u00E0o nh\u00E1nh prod-c v\u00E0 k\u00E8m file changedb.sql \u1EDF tr\u00EAn v\u00E0 changevault.md n\u1EBFu c\u00F3.`,refs:["@docs/vault.md"],next:"T520"},
+
+T520:{code:"T520",name:"Post Production",phase:"T5 — Production",type:"A",team:"DevOps + SRE",objective:"Umbrella task: goi cac sub-steps sau deploy production.",preconditions:["T510 done","Production stable"],inputDocs:["Production outputs"],outputDocs:["All sub-steps completed"],skillFile:"sepo_skill/steps/T5/T520.md",prompt:`Ban la SEPO Process Orchestrator. Phase T520 (Post Production) can thuc hien cac sub-steps sau:
+[list sub-steps]
+Hay bat dau voi step dau tien.`,refs:["@docs/vault.md"],next:"T530"},
+
+T530:{code:"T530",name:"Production Checkpoint",phase:"T5 — Production",type:"A",team:"Technical Writer + DevOps Engineer",objective:"Luu checkpoint production: version commits, DB schema, docs.",preconditions:["T510 stable"],inputDocs:["Git log","Prod DB"],outputDocs:["PRD_VersionCommit.md","PRD_DB_Schema.md"],skillFile:"sepo_skill/steps/T5/T530.md",prompt:`T\u1ED5ng h\u1EE3p t\u1EA5t c\u1EA3 c\u00E1c commit git/repo v\u00E0o file PRD_VersionCommit.md v\u1EDBi t\u00EAn th\u00EAm h\u1EADu t\u1ED1 vxx.date (v3_190326)
+Export ra DB schema ra file : PRD_DB_Schema_{version}_{date}`,refs:["@docs/vault.md"],next:"Done! 🎉"}
 };
 
 const PHASES=[
@@ -258,7 +1135,7 @@ const PHASES=[
   {id:"T2",label:"Architecture & ISP",desc:"4 steps",color:"linear-gradient(135deg,#8b5cf6,#a855f7)",steps:["T211","T212","T220","T230"]},
   {id:"T3",label:"Build BApp",desc:"4 steps",color:"linear-gradient(135deg,#22c55e,#16a34a)",steps:["T310","T320","T380","T390"]},
   {id:"T4",label:"Deploy & UAT",desc:"11 steps",color:"linear-gradient(135deg,#f97316,#ef4444)",steps:["T411","T412","T413","T414","T415","T421","T422","T423","T431","T432","T433"]},
-  {id:"T5",label:"Production",desc:"2 steps",color:"linear-gradient(135deg,#ec4899,#f43f5e)",steps:["T510","T530"]}
+  {id:"T5",label:"Production",desc:"3 steps",color:"linear-gradient(135deg,#ec4899,#f43f5e)",steps:["T510","T520","T530"]}
 ];
 
 let activeStep=null;
