@@ -5,429 +5,346 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEPO — Skills & Claude.md Overview</title>
 <style>
-  :root {
-    --bg: #0f172a; --card: #1e293b; --card2: #334155;
-    --text: #e2e8f0; --muted: #94a3b8; --accent: #3b82f6;
-    --green: #22c55e; --yellow: #eab308; --red: #ef4444;
-    --purple: #a855f7; --pink: #ec4899; --orange: #f97316;
-    --border: #475569;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-  .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+:root{--bg:#0a0f1a;--sidebar:#0f1629;--card:#151d2e;--card2:#1a2437;--main:#0d1220;--text:#e2e8f0;--muted:#7c8ba1;--accent:#3b82f6;--green:#22c55e;--yellow:#eab308;--red:#ef4444;--purple:#a855f7;--pink:#ec4899;--orange:#f97316;--border:#1e2a3f;--hover:rgba(59,130,246,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;height:100vh;overflow:hidden}
+.layout{display:flex;height:100vh}
 
-  /* Header */
-  .hero { text-align: center; padding: 4rem 2rem 3rem; }
-  .hero h1 { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, #3b82f6, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
-  .hero .subtitle { font-size: 1.25rem; color: var(--muted); max-width: 700px; margin: 0 auto; }
-  .hero .badges { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
-  .badge { padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem; font-weight: 600; }
-  .badge-blue { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
-  .badge-green { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
-  .badge-purple { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.3); }
+/* === LEFT SIDEBAR === */
+.sidebar{width:320px;min-width:320px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-header{padding:1.25rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-header h1{font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,#3b82f6,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sb-header p{font-size:.7rem;color:var(--muted);margin-top:.15rem}
+.sb-badges{display:flex;gap:.4rem;margin-top:.5rem;flex-wrap:wrap}
+.sb-badge{padding:.15rem .5rem;border-radius:1rem;font-size:.65rem;font-weight:600}
+.sb-b1{background:rgba(59,130,246,.12);color:#60a5fa}.sb-b2{background:rgba(34,197,94,.12);color:#4ade80}.sb-b3{background:rgba(168,85,247,.12);color:#c084fc}
 
-  /* Architecture */
-  .arch-section { margin: 3rem 0; }
-  .arch-section h2 { font-size: 1.8rem; margin-bottom: 1.5rem; text-align: center; }
-  .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; }
-  .arch-card { background: var(--card); border-radius: 1rem; padding: 1.5rem; border: 1px solid var(--border); }
-  .arch-card h3 { font-size: 1.1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-  .arch-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-  .arch-table th { text-align: left; padding: 0.5rem; border-bottom: 2px solid var(--border); color: var(--muted); font-weight: 600; }
-  .arch-table td { padding: 0.5rem; border-bottom: 1px solid rgba(71,85,105,0.4); }
-  .level-badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 700; font-family: monospace; }
-  .l-personal { background: rgba(59,130,246,0.2); color: #60a5fa; }
-  .l-project { background: rgba(34,197,94,0.2); color: #4ade80; }
-  .l-task { background: rgba(234,179,8,0.2); color: #facc15; }
-  .l-lazy { background: rgba(168,85,247,0.2); color: #c084fc; }
+/* Sidebar tabs */
+.sb-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-tab{flex:1;padding:.5rem;text-align:center;font-size:.72rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
+.sb-tab:hover{color:var(--text)}.sb-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.sb-panel{display:none;flex:1;overflow-y:auto}.sb-panel.active{display:block}
 
-  /* Phase Timeline */
-  .timeline { margin: 3rem 0; }
-  .timeline h2 { font-size: 1.8rem; margin-bottom: 2rem; text-align: center; }
-  .phase { margin-bottom: 2rem; }
-  .phase-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; cursor: pointer; user-select: none; }
-  .phase-header:hover .phase-icon { transform: scale(1.1); }
-  .phase-icon { width: 56px; height: 56px; border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: white; flex-shrink: 0; transition: transform 0.2s; }
-  .phase-title { font-size: 1.3rem; font-weight: 700; }
-  .phase-desc { font-size: 0.9rem; color: var(--muted); }
-  .phase-arrow { margin-left: auto; font-size: 1.2rem; color: var(--muted); transition: transform 0.3s; }
-  .phase-arrow.open { transform: rotate(90deg); }
+/* Tree nav */
+.sb-tree{padding:.5rem 0}
+.phase-row{display:flex;align-items:center;gap:.5rem;padding:.45rem .75rem;cursor:pointer;user-select:none;transition:background .12s}
+.phase-row:hover{background:var(--hover)}
+.phase-dot{width:32px;height:32px;border-radius:.5rem;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.7rem;color:#fff;flex-shrink:0}
+.phase-info{flex:1;min-width:0}
+.phase-label{font-size:.82rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.phase-sub{font-size:.65rem;color:var(--muted)}
+.phase-chevron{font-size:.7rem;color:var(--muted);transition:transform .2s;flex-shrink:0}.phase-chevron.open{transform:rotate(90deg)}
 
-  .steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; padding-left: 72px; }
-  .step-card { background: var(--card); border-radius: 0.75rem; padding: 1.25rem; border: 1px solid var(--border); transition: border-color 0.2s, transform 0.2s; cursor: pointer; }
-  .step-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .step-code { font-family: monospace; font-weight: 700; font-size: 0.95rem; }
-  .step-name { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; }
-  .step-type { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 0.2rem; font-size: 0.7rem; font-weight: 700; margin-left: 0.5rem; }
-  .type-a { background: rgba(34,197,94,0.2); color: #4ade80; }
-  .type-b { background: rgba(234,179,8,0.2); color: #facc15; }
-  .type-c { background: rgba(239,68,68,0.2); color: #f87171; }
-  .step-team { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
-  .step-docs { font-size: 0.75rem; color: var(--purple); margin-top: 0.5rem; }
-  .step-output { font-size: 0.75rem; color: var(--green); margin-top: 0.25rem; }
+.step-list{display:none;padding:0 0 .25rem 0}.step-list.open{display:block}
+.step-row{display:flex;align-items:center;gap:.5rem;padding:.35rem .75rem .35rem 52px;cursor:pointer;transition:background .12s;border-left:2px solid transparent}
+.step-row:hover{background:var(--hover)}
+.step-row.active{background:rgba(59,130,246,.12);border-left-color:var(--accent)}
+.step-code{font-family:monospace;font-weight:700;font-size:.78rem;flex-shrink:0}
+.step-label{font-size:.72rem;color:var(--muted);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tp{display:inline-block;padding:.05rem .3rem;border-radius:.15rem;font-size:.6rem;font-weight:700;flex-shrink:0}
+.ta{background:rgba(34,197,94,.18);color:#4ade80}.tb{background:rgba(234,179,8,.18);color:#facc15}.tc{background:rgba(239,68,68,.18);color:#f87171}
 
-  /* Detail Modal */
-  .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 100; justify-content: center; align-items: flex-start; padding: 2rem; overflow-y: auto; }
-  .modal-overlay.active { display: flex; }
-  .modal { background: var(--card); border-radius: 1rem; max-width: 800px; width: 100%; padding: 2rem; border: 1px solid var(--border); margin-top: 2rem; }
-  .modal h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-  .modal .close-btn { float: right; background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; }
-  .modal .close-btn:hover { color: white; }
-  .modal section { margin-top: 1.5rem; }
-  .modal section h4 { font-size: 0.9rem; color: var(--accent); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
-  .modal pre { background: var(--bg); padding: 1rem; border-radius: 0.5rem; font-size: 0.8rem; overflow-x: auto; white-space: pre-wrap; border: 1px solid var(--border); }
-  .modal ul { padding-left: 1.5rem; font-size: 0.9rem; }
-  .modal li { margin-bottom: 0.25rem; }
+/* Arch / Flow / Skill in sidebar panels */
+.sb-content{padding:.75rem}
+.sb-card{background:var(--card);border:1px solid var(--border);border-radius:.5rem;padding:.75rem;margin-bottom:.75rem;font-size:.78rem}
+.sb-card h4{font-size:.75rem;font-weight:700;margin-bottom:.5rem;color:var(--accent)}
+.sb-card table{width:100%;border-collapse:collapse;font-size:.72rem}
+.sb-card th{text-align:left;padding:.25rem .3rem;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600}
+.sb-card td{padding:.25rem .3rem;border-bottom:1px solid rgba(30,42,63,.5)}
+.lb{display:inline-block;padding:.08rem .35rem;border-radius:.15rem;font-size:.6rem;font-weight:700;font-family:monospace}
+.lb-p{background:rgba(59,130,246,.18);color:#60a5fa}.lb-j{background:rgba(34,197,94,.18);color:#4ade80}
+.lb-t{background:rgba(234,179,8,.18);color:#facc15}.lb-l{background:rgba(168,85,247,.18);color:#c084fc}
+.skill-pre{background:var(--bg);padding:.75rem;border-radius:.4rem;font-family:monospace;font-size:.7rem;line-height:1.8;overflow-x:auto;white-space:pre;border:1px solid var(--border)}
+.s0{color:#c084fc;font-weight:700}.s1{color:#60a5fa}.s2{color:#4ade80}.s3{color:#94a3b8}.sh{color:#f472b6}.sk{color:#fb923c}
+.fs{display:flex;gap:.5rem;margin-bottom:.4rem;font-size:.78rem;align-items:flex-start}
+.fn{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0}
 
-  /* Skill Hierarchy */
-  .skill-section { margin: 3rem 0; }
-  .skill-section h2 { font-size: 1.8rem; margin-bottom: 1.5rem; text-align: center; }
-  .skill-tree { background: var(--card); border-radius: 1rem; padding: 2rem; border: 1px solid var(--border); font-family: monospace; font-size: 0.85rem; line-height: 1.8; overflow-x: auto; }
-  .sk-l0 { color: #c084fc; font-weight: 700; }
-  .sk-l1 { color: #60a5fa; }
-  .sk-l2 { color: #4ade80; }
-  .sk-l3 { color: #94a3b8; }
-  .sk-help { color: #f472b6; }
-  .sk-kb { color: #fb923c; }
+/* === MAIN PANEL === */
+.main{flex:1;overflow-y:auto;background:var(--main)}
+.main-empty{display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;color:var(--muted)}
+.main-empty .icon{font-size:3rem;margin-bottom:1rem;opacity:.3}
+.main-empty p{font-size:.9rem}
 
-  /* Flow Section */
-  .flow-section { margin: 3rem 0; }
-  .flow-section h2 { font-size: 1.8rem; margin-bottom: 1.5rem; text-align: center; }
-  .flow-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; }
-  .flow-card { background: var(--card); border-radius: 1rem; padding: 1.5rem; border: 1px solid var(--border); }
-  .flow-card h3 { margin-bottom: 1rem; font-size: 1.1rem; }
-  .flow-step { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; font-size: 0.9rem; }
-  .flow-num { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+/* Detail view */
+.det{padding:2rem 2.5rem;max-width:900px}
+.det-head{margin-bottom:2rem}
+.det-head h2{font-size:1.6rem;font-weight:800;margin-bottom:.4rem}
+.det-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+.det-tag{padding:.2rem .6rem;border-radius:.25rem;font-size:.72rem;font-weight:600;background:var(--card);border:1px solid var(--border)}
+.det-tag-s{border-color:rgba(168,85,247,.35);color:#c084fc}
+.det-tag-d{border-color:rgba(59,130,246,.35);color:#60a5fa}
+.det-tag-t{border-color:rgba(34,197,94,.35);color:#4ade80}
 
-  /* Footer */
-  .footer { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+.det-section{margin-bottom:1.75rem}
+.det-section h4{font-size:.78rem;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;display:flex;align-items:center;gap:.35rem;font-weight:700}
+.det-section pre{background:var(--card);padding:1.25rem;border-radius:.6rem;font-size:.8rem;overflow-x:auto;white-space:pre-wrap;border:1px solid var(--border);line-height:1.75;font-family:'JetBrains Mono','Fira Code',monospace}
+.det-section ul{padding-left:1.25rem;font-size:.88rem}.det-section li{margin-bottom:.25rem}
+.det-section .ref-grid{display:flex;flex-wrap:wrap;gap:.35rem}
+.gate-box{background:linear-gradient(135deg,rgba(234,179,8,.08),rgba(239,68,68,.08));border:1px solid rgba(234,179,8,.25);padding:.75rem 1rem;border-radius:.5rem;font-size:.88rem}
+.next-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);padding:.6rem 1rem;border-radius:.5rem;font-size:.88rem;color:var(--green);font-weight:600}
 
-  @media (max-width: 768px) {
-    .hero h1 { font-size: 2rem; }
-    .steps-grid { padding-left: 0; grid-template-columns: 1fr; }
-    .arch-grid { grid-template-columns: 1fr; }
-  }
+@media(max-width:900px){.sidebar{width:260px;min-width:260px}}
+@media(max-width:700px){.layout{flex-direction:column}.sidebar{width:100%;min-width:0;height:45vh}.main{height:55vh}}
 </style>
 </head>
 <body>
+<div class="layout">
 
-<!-- Hero -->
-<div class="hero">
-  <h1>SEPO Process Orchestrator</h1>
-  <p class="subtitle">Software Engineering Process Orchestrator — He thong quan ly quy trinh phat trien phan mem voi Claude Code</p>
-  <div class="badges">
-    <span class="badge badge-blue">6 Phases</span>
-    <span class="badge badge-green">24 Steps</span>
-    <span class="badge badge-purple">50 Skill Files</span>
-  </div>
-</div>
-
-<div class="container">
-
-<!-- Architecture: 3 Levels -->
-<div class="arch-section">
-  <h2>Architecture: 3-Level Hierarchy</h2>
-  <div class="arch-grid">
-    <div class="arch-card">
-      <h3>📄 Claude.md Levels</h3>
-      <table class="arch-table">
-        <tr><th>Level</th><th>Scope</th><th>Location</th><th>Trigger</th></tr>
-        <tr><td><span class="level-badge l-personal">L1 Personal</span></td><td>User config</td><td><code>~/.claude/CLAUDE.md</code></td><td>Always loaded</td></tr>
-        <tr><td><span class="level-badge l-project">L1 Project</span></td><td>Project config</td><td><code>{project}/CLAUDE.md</code></td><td>In project folder</td></tr>
-        <tr><td><span class="level-badge l-task">L1 Task</span></td><td>Task config</td><td>Overwrites project</td><td>Start task Txx</td></tr>
-        <tr><td><span class="level-badge l-lazy">L2 Ref</span></td><td>Lazy-load</td><td>Referenced in CLAUDE.md</td><td>Context match</td></tr>
-      </table>
-    </div>
-    <div class="arch-card">
-      <h3>⚡ Skill Levels</h3>
-      <table class="arch-table">
-        <tr><th>Level</th><th>Scope</th><th>Location</th><th>Trigger</th></tr>
-        <tr><td><span class="level-badge l-personal">L1 Personal</span></td><td>User skills</td><td><code>~/.claude/skills/</code></td><td>Always available</td></tr>
-        <tr><td><span class="level-badge l-project">L1 Project</span></td><td>Project skills</td><td><code>{project}/@Skill/</code></td><td>Index.MD conditions</td></tr>
-        <tr><td><span class="level-badge l-task">L1 Task</span></td><td>Task skills</td><td>Overwrites Index.MD</td><td>Start task Txx</td></tr>
-        <tr><td><span class="level-badge l-lazy">L3 Detail</span></td><td>Individual</td><td>Referenced in Index</td><td>Index reference</td></tr>
-      </table>
+<!-- ======= SIDEBAR ======= -->
+<div class="sidebar">
+  <div class="sb-header">
+    <h1>SEPO Process Orchestrator</h1>
+    <p>Software Engineering Process Orchestrator</p>
+    <div class="sb-badges">
+      <span class="sb-badge sb-b1">6 Phases</span>
+      <span class="sb-badge sb-b2">24 Steps</span>
+      <span class="sb-badge sb-b3">50 Skills</span>
     </div>
   </div>
-</div>
+  <div class="sb-tabs">
+    <div class="sb-tab active" onclick="switchSbTab('tree')">Process</div>
+    <div class="sb-tab" onclick="switchSbTab('arch')">Architecture</div>
+    <div class="sb-tab" onclick="switchSbTab('skills')">Skills</div>
+    <div class="sb-tab" onclick="switchSbTab('flows')">Flows</div>
+  </div>
 
-<!-- Phase Timeline -->
-<div class="timeline">
-  <h2>Process Flow: T0 → T5</h2>
+  <!-- Panel: Process Tree -->
+  <div id="sb-tree" class="sb-panel active">
+    <div class="sb-tree" id="tree-root"></div>
+  </div>
 
-  <!-- T0 -->
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <div class="phase-icon" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">T0</div>
-      <div><div class="phase-title">Setup Environment</div><div class="phase-desc">1 step — Clone repos, connect DB, setup dev environment</div></div>
-      <span class="phase-arrow">▶</span>
-    </div>
-    <div class="steps-grid" style="display:none">
-      <div class="step-card" onclick="showDetail('T010')">
-        <div><span class="step-code">T010</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">Setup ClaudeCode: Pull Git & Connect DB</div>
-        <div class="step-team">👥 DevOps + Backend Dev</div>
-        <div class="step-docs">📥 GIT-DB-Structure.md, vault.md</div>
-        <div class="step-output">📤 Repos cloned, DB connected, .env created</div>
+  <!-- Panel: Architecture -->
+  <div id="sb-arch" class="sb-panel">
+    <div class="sb-content">
+      <div class="sb-card"><h4>Claude.md Levels</h4>
+        <table><tr><th>Level</th><th>Where</th><th>Trigger</th></tr>
+        <tr><td><span class="lb lb-p">Personal</span></td><td>~/.claude/</td><td>Always</td></tr>
+        <tr><td><span class="lb lb-j">Project</span></td><td>{project}/</td><td>In folder</td></tr>
+        <tr><td><span class="lb lb-t">Task</span></td><td>Overwrite</td><td>Start Txx</td></tr>
+        <tr><td><span class="lb lb-l">L2 Ref</span></td><td>## References</td><td>Context</td></tr></table>
+      </div>
+      <div class="sb-card"><h4>Skill Levels</h4>
+        <table><tr><th>Level</th><th>Where</th><th>Trigger</th></tr>
+        <tr><td><span class="lb lb-p">Personal</span></td><td>~/.claude/skills/</td><td>Always</td></tr>
+        <tr><td><span class="lb lb-j">Project</span></td><td>@Skill/Index.MD</td><td>Conditions</td></tr>
+        <tr><td><span class="lb lb-t">Task</span></td><td>Overwrite Index</td><td>Start Txx</td></tr>
+        <tr><td><span class="lb lb-l">L3</span></td><td>Referenced</td><td>Index ref</td></tr></table>
+      </div>
+      <div class="sb-card"><h4>L2 Lazy Load (References)</h4>
+        <pre style="background:var(--bg);padding:.5rem;border-radius:.3rem;font-size:.68rem;border:1px solid var(--border);white-space:pre-wrap;font-family:monospace">## References
+- @skills/review.md — load when reviewing
+- @docs/api.md — load when making API call
+- @skills/payroll.md — load for payroll</pre>
+        <p style="font-size:.68rem;color:var(--muted);margin-top:.3rem">Auto-load khi: user nhac, Claude doan can, user bao doc het</p>
       </div>
     </div>
   </div>
 
-  <!-- T1 -->
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <div class="phase-icon" style="background:linear-gradient(135deg,#3b82f6,#06b6d4)">T1</div>
-      <div><div class="phase-title">System Analysis ("Ve Voi")</div><div class="phase-desc">4 steps — Entity overview → Workflows → Details → Project Guide</div></div>
-      <span class="phase-arrow">▶</span>
-    </div>
-    <div class="steps-grid" style="display:none">
-      <div class="step-card" onclick="showDetail('T110')">
-        <div><span class="step-code">T110</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">L1: Voi Tong — Entity Overview</div>
-        <div class="step-team">👥 BA + System Architect</div>
-        <div class="step-docs">📥 VOI / requirement docs</div>
-        <div class="step-output">📤 L1_VoiTong.md</div>
-      </div>
-      <div class="step-card" onclick="showDetail('T120')">
-        <div><span class="step-code">T120</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">L2: Workflows</div>
-        <div class="step-team">👥 BA + Process Designer</div>
-        <div class="step-docs">📥 L1_VoiTong.md</div>
-        <div class="step-output">📤 L2_Workflows.md</div>
-      </div>
-      <div class="step-card" onclick="showDetail('T130')">
-        <div><span class="step-code">T130</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">L3: Workflow Details</div>
-        <div class="step-team">👥 BA + UX + Backend Dev</div>
-        <div class="step-docs">📥 L1 + L2 + Requirements</div>
-        <div class="step-output">📤 L3_WorkflowDetails.md</div>
-      </div>
-      <div class="step-card" onclick="showDetail('T140')">
-        <div><span class="step-code">T140</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">Project Guide</div>
-        <div class="step-team">👥 Tech Writer + PM</div>
-        <div class="step-docs">📥 L1 + L2 + L3</div>
-        <div class="step-output">📤 ProjectGuide.md</div>
-      </div>
+  <!-- Panel: Skill Tree -->
+  <div id="sb-skills" class="sb-panel">
+    <div class="sb-content">
+      <div class="skill-pre"><span class="s0">SKILL.md</span>                      Master Orchestrator
+<span class="s0">SKILLS_OVERVIEW.md</span>             Taxonomy
+
+<span class="s1">T0/SKILL.md</span>                    Setup
+  <span class="s2">T0/T010.md</span>                  Clone + Connect
+
+<span class="s1">T1/SKILL.md</span>                    Analysis
+  <span class="s2">T1/T110.md</span>                  Entities
+  <span class="s2">T1/T120.md</span>                  Workflows
+  <span class="s2">T1/T130.md</span>                  Details
+  <span class="s2">T1/T140.md</span>                  Guide
+
+<span class="s1">T2/SKILL.md</span>                    Architecture
+  <span class="s3">T2/T210/T211.md</span>            Schema
+  <span class="s3">T2/T210/T212.md</span>            Build AP
+  <span class="s2">T2/T220.md</span>                  Create ISP
+  <span class="s2">T2/T230.md</span>                  Audit ISP ⭐
+
+<span class="s1">T3/SKILL.md</span>                    Build
+  <span class="s3">T3/T310-001.md</span>             Implement 🔄
+  <span class="s3">T3/T320-001.md</span>             Test 🔄
+  <span class="s2">T3/T380.md</span>                  Commit
+  <span class="s2">T3/T390.md</span>                  Post-Audit ⭐
+
+<span class="s1">T4/SKILL.md</span>                    Deploy & UAT
+  <span class="s2">T410/ (5)</span>                   Staging
+  <span class="s2">T420/ (3)</span>                   UAT
+  <span class="s2">T430/ (3)</span>                   Fix A/B/C
+
+<span class="s1">T5/SKILL.md</span>                    Production
+  <span class="s2">T5/T510.md</span>                  Deploy
+  <span class="s2">T5/T530.md</span>                  Checkpoint
+
+<span class="sh">helpers/detect-step.md</span>         Detect
+<span class="sh">helpers/download-docs.md</span>       Download
+<span class="sh">helpers/upload-output.md</span>       Upload
+<span class="sk">kb/sepo_architecture.md</span>        Arch KB
+<span class="sk">kb/sepo_process.md</span>             Process KB
+<span class="sk">kb/sepo_deployment.md</span>          Deploy KB
+<span class="sk">kb/sepo_testing.md</span>             Test KB</div>
     </div>
   </div>
 
-  <!-- T2 -->
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <div class="phase-icon" style="background:linear-gradient(135deg,#8b5cf6,#a855f7)">T2</div>
-      <div><div class="phase-title">Architecture Pack & ISP</div><div class="phase-desc">4 steps — DB Schema → Architecture Pack → ISP → Audit ISP</div></div>
-      <span class="phase-arrow">▶</span>
-    </div>
-    <div class="steps-grid" style="display:none">
-      <div class="step-card" onclick="showDetail('T211')">
-        <div><span class="step-code">T211</span><span class="step-type type-b">B</span></div>
-        <div class="step-name">Prep: Update DB Schema</div>
-        <div class="step-team">👥 DB Architect + Backend Dev</div>
-        <div class="step-docs">📥 L1 + current schema</div>
-        <div class="step-output">📤 migration.sql, ERD</div>
+  <!-- Panel: Flows -->
+  <div id="sb-flows" class="sb-panel">
+    <div class="sb-content">
+      <div class="sb-card"><h4>Setup Flow</h4>
+        <div class="fs"><div class="fn">1</div><div>Get API Key</div></div>
+        <div class="fs"><div class="fn">2</div><div>Auth & select project</div></div>
+        <div class="fs"><div class="fn">3</div><div>Download CLAUDE.md</div></div>
+        <div class="fs"><div class="fn">4</div><div>Download skills + docs</div></div>
+        <div class="fs"><div class="fn">5</div><div>Connect GIT + DB</div></div>
       </div>
-      <div class="step-card" onclick="showDetail('T212')">
-        <div><span class="step-code">T212</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">Build ArchitecturePack</div>
-        <div class="step-team">👥 Architect + Writer + DB Architect</div>
-        <div class="step-docs">📥 L1, L2, L3, schema, layerevent.md</div>
-        <div class="step-output">📤 ArchitecturePack.md (7 sections)</div>
+      <div class="sb-card"><h4>Task Switch</h4>
+        <div class="fs"><div class="fn" style="background:var(--yellow);color:#000">1</div><div>Upload old docs</div></div>
+        <div class="fs"><div class="fn" style="background:var(--yellow);color:#000">2</div><div>Propose skill updates</div></div>
+        <div class="fs"><div class="fn" style="background:var(--green)">3</div><div>Download new CLAUDE.md</div></div>
+        <div class="fs"><div class="fn" style="background:var(--green)">4</div><div>Download new docs + skills</div></div>
+        <div class="fs"><div class="fn" style="background:var(--green)">5</div><div>Update References</div></div>
       </div>
-      <div class="step-card" onclick="showDetail('T220')">
-        <div><span class="step-code">T220</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">Create ISP</div>
-        <div class="step-team">👥 Tech Lead + Architect + QA</div>
-        <div class="step-docs">📥 ArchitecturePack.md</div>
-        <div class="step-output">📤 IncrementalStepPlan.md</div>
-      </div>
-      <div class="step-card" onclick="showDetail('T230')">
-        <div><span class="step-code">T230</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">Audit ISP ⭐ Quality Gate #1</div>
-        <div class="step-team">👥 ISP Auditor + Architect</div>
-        <div class="step-docs">📥 ISP + AP + Tech Stack</div>
-        <div class="step-output">📤 ISP Audited (7-point check)</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- T3 -->
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <div class="phase-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a)">T3</div>
-      <div><div class="phase-title">Build BApp</div><div class="phase-desc">4 steps — Implement (loop) → Test (loop) → Commit → Post-Audit</div></div>
-      <span class="phase-arrow">▶</span>
-    </div>
-    <div class="steps-grid" style="display:none">
-      <div class="step-card" onclick="showDetail('T310')">
-        <div><span class="step-code">T310</span><span class="step-type type-a">A/B</span></div>
-        <div class="step-name">Build — Implement per ISP step 🔄</div>
-        <div class="step-team">👥 Senior Engineer + Reviewer</div>
-        <div class="step-docs">📥 ISP Audited + AP section</div>
-        <div class="step-output">📤 Code + passing tests</div>
-      </div>
-      <div class="step-card" onclick="showDetail('T320')">
-        <div><span class="step-code">T320</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">Test — Verify step 🔄</div>
-        <div class="step-team">👥 QA + Security Tester</div>
-        <div class="step-docs">📥 ISP step + code</div>
-        <div class="step-output">📤 Test report</div>
-      </div>
-      <div class="step-card" onclick="showDetail('T380')">
-        <div><span class="step-code">T380</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">Finish ISP — Commit & Push</div>
-        <div class="step-team">👥 DevOps + Tech Writer</div>
-        <div class="step-docs">📥 vault.md, GIT-DB-Structure</div>
-        <div class="step-output">📤 Code on Git, MR created</div>
-      </div>
-      <div class="step-card" onclick="showDetail('T390')">
-        <div><span class="step-code">T390</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">Post-Audit ⭐ Quality Gate #2</div>
-        <div class="step-team">👥 Architect + Auditor + QA</div>
-        <div class="step-docs">📥 AP + codebase</div>
-        <div class="step-output">📤 PostAudit.md</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- T4 -->
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <div class="phase-icon" style="background:linear-gradient(135deg,#f97316,#ef4444)">T4</div>
-      <div><div class="phase-title">Deploy & UAT</div><div class="phase-desc">11 steps — Staging Deploy (5) → UAT (3) → Fix Issues (3 parallel)</div></div>
-      <span class="phase-arrow">▶</span>
-    </div>
-    <div class="steps-grid" style="display:none">
-      <div class="step-card"><div><span class="step-code">T411</span><span class="step-type type-b">B</span></div><div class="step-name">Run Migration</div><div class="step-team">👥 DB Architect + DevOps</div></div>
-      <div class="step-card"><div><span class="step-code">T412</span><span class="step-type type-a">A</span></div><div class="step-name">Deploy Local & Smoke Test</div><div class="step-team">👥 DevOps + QA</div></div>
-      <div class="step-card"><div><span class="step-code">T413</span><span class="step-type type-a">A</span></div><div class="step-name">Push Git & Verify CI</div><div class="step-team">👥 DevOps + Git</div></div>
-      <div class="step-card"><div><span class="step-code">T414</span><span class="step-type type-a">A</span></div><div class="step-name">Deploy Staging</div><div class="step-team">👥 DevOps + SRE</div></div>
-      <div class="step-card"><div><span class="step-code">T415</span><span class="step-type type-a">A</span></div><div class="step-name">Staging Checkpoint</div><div class="step-output">📤 STG_VersionCommit + STG_DB_Schema</div></div>
-      <div class="step-card"><div><span class="step-code">T421</span><span class="step-type type-a">A</span></div><div class="step-name">Prep Test Data & Cases</div><div class="step-team">👥 QA Lead + Data Engineer</div></div>
-      <div class="step-card"><div><span class="step-code">T422</span><span class="step-type type-a">A</span></div><div class="step-name">Execute UAT & Feedback</div><div class="step-output">📤 TestFeedback.xlsx</div></div>
-      <div class="step-card"><div><span class="step-code">T423</span><span class="step-type type-a">A</span></div><div class="step-name">Classify Feedback A/B/C</div><div class="step-team">👥 QA + PM + Architect</div></div>
-      <div class="step-card"><div><span class="step-code">T431</span><span class="step-type type-a">A</span></div><div class="step-name">Fix A-type (UI/API) ⚡</div><div class="step-team">👥 Frontend + UX</div></div>
-      <div class="step-card"><div><span class="step-code">T432</span><span class="step-type type-b">B</span></div><div class="step-name">Fix B-type (Logic) ⚡</div><div class="step-team">👥 Backend + BA</div></div>
-      <div class="step-card"><div><span class="step-code">T433</span><span class="step-type type-c">C</span></div><div class="step-name">Fix C-type (Perf) ⚡</div><div class="step-team">👥 Perf Eng + Architect</div></div>
-    </div>
-  </div>
-
-  <!-- T5 -->
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <div class="phase-icon" style="background:linear-gradient(135deg,#ec4899,#f43f5e)">T5</div>
-      <div><div class="phase-title">Production Release</div><div class="phase-desc">2 steps — Deploy Production → Checkpoint</div></div>
-      <span class="phase-arrow">▶</span>
-    </div>
-    <div class="steps-grid" style="display:none">
-      <div class="step-card" onclick="showDetail('T510')">
-        <div><span class="step-code">T510</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">Deploy Production</div>
-        <div class="step-team">👥 DevOps + SRE + DB Architect</div>
-        <div class="step-output">📤 changedb.sql, changevault.md</div>
-      </div>
-      <div class="step-card" onclick="showDetail('T530')">
-        <div><span class="step-code">T530</span><span class="step-type type-a">A</span></div>
-        <div class="step-name">Production Checkpoint</div>
-        <div class="step-team">👥 Tech Writer + DevOps</div>
-        <div class="step-output">📤 PRD_VersionCommit + PRD_DB_Schema</div>
+      <div class="sb-card"><h4>End of Day</h4>
+        <div class="fs"><div class="fn" style="background:var(--purple)">1</div><div>Batch skill proposals</div></div>
+        <div class="fs"><div class="fn" style="background:var(--purple)">2</div><div>POSUP review & approve</div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Skill Hierarchy -->
-<div class="skill-section">
-  <h2>Skill File Hierarchy (50 files)</h2>
-  <div class="skill-tree">
-<span class="sk-l0">SKILL.md</span>                          — L0 Master Orchestrator
-<span class="sk-l0">SKILLS_OVERVIEW.md</span>                 — L0 Skills Taxonomy
-<span class="sk-l1">steps/T0/SKILL.md</span>                  — L1 Phase: Setup
-  <span class="sk-l2">steps/T0/T010.md</span>                — L2 Setup ClaudeCode
-<span class="sk-l1">steps/T1/SKILL.md</span>                  — L1 Phase: System Analysis
-  <span class="sk-l2">steps/T1/T110.md</span>                — L2 Entity Overview
-  <span class="sk-l2">steps/T1/T120.md</span>                — L2 Workflows
-  <span class="sk-l2">steps/T1/T130.md</span>                — L2 Workflow Details
-  <span class="sk-l2">steps/T1/T140.md</span>                — L2 Project Guide
-<span class="sk-l1">steps/T2/SKILL.md</span>                  — L1 Phase: Architecture
-  <span class="sk-l2">steps/T2/T210/SKILL.md</span>          — L2 Sub-phase: Prep + Build AP
-    <span class="sk-l3">steps/T2/T210/T211.md</span>        — L3 DB Schema & Migration
-    <span class="sk-l3">steps/T2/T210/T212.md</span>        — L3 Build ArchitecturePack
-  <span class="sk-l2">steps/T2/T220.md</span>                — L2 Create ISP
-  <span class="sk-l2">steps/T2/T230.md</span>                — L2 Audit ISP ⭐
-<span class="sk-l1">steps/T3/SKILL.md</span>                  — L1 Phase: Build
-  <span class="sk-l2">steps/T3/T300-001/SKILL.md</span>      — L2 Sub-phase: Per-step loop
-    <span class="sk-l3">steps/T3/T300-001/T310-001.md</span>— L3 Build (implement) 🔄
-    <span class="sk-l3">steps/T3/T300-001/T320-001.md</span>— L3 Test (verify) 🔄
-  <span class="sk-l2">steps/T3/T380.md</span>                — L2 Commit & Push
-  <span class="sk-l2">steps/T3/T390.md</span>                — L2 Post-Audit ⭐
-<span class="sk-l1">steps/T4/SKILL.md</span>                  — L1 Phase: Deploy & UAT
-  <span class="sk-l2">steps/T4/T410/</span>                  — L2 Sub-phase: Staging (5 steps)
-  <span class="sk-l2">steps/T4/T420/</span>                  — L2 Sub-phase: UAT (3 steps)
-  <span class="sk-l2">steps/T4/T430/</span>                  — L2 Sub-phase: Fix Issues (3 parallel)
-<span class="sk-l1">steps/T5/SKILL.md</span>                  — L1 Phase: Production
-  <span class="sk-l2">steps/T5/T510.md</span>                — L2 Deploy Prod
-  <span class="sk-l2">steps/T5/T530.md</span>                — L2 Checkpoint
-<span class="sk-help">helpers/detect-step.md</span>             — Helper: Step Detection
-<span class="sk-help">helpers/download-docs.md</span>           — Helper: Doc Download from SEPO API
-<span class="sk-help">helpers/upload-output.md</span>           — Helper: Output Upload to SEPO API
-<span class="sk-kb">kb/sepo_architecture.md</span>            — KB: Architecture Reference
-<span class="sk-kb">kb/sepo_process.md</span>                 — KB: Process Documentation
-<span class="sk-kb">kb/sepo_deployment.md</span>              — KB: Deployment Procedures
-<span class="sk-kb">kb/sepo_testing.md</span>                 — KB: Testing Procedures
+<!-- ======= MAIN CONTENT ======= -->
+<div class="main" id="main-panel">
+  <div class="main-empty">
+    <div class="icon">👈</div>
+    <p>Chon 1 step tu menu ben trai de xem chi tiet</p>
+    <p style="font-size:.75rem;margin-top:.5rem;color:var(--muted)">Claude.md + Skill Prompt + Input/Output Docs + References</p>
   </div>
 </div>
 
-<!-- Lifecycle Flows -->
-<div class="flow-section">
-  <h2>Lifecycle Flows</h2>
-  <div class="flow-cards">
-    <div class="flow-card">
-      <h3>🚀 Setup Flow</h3>
-      <div class="flow-step"><div class="flow-num">1</div><div>Get API Key from SEPOApp</div></div>
-      <div class="flow-step"><div class="flow-num">2</div><div>Authenticate & select project</div></div>
-      <div class="flow-step"><div class="flow-num">3</div><div>Download company CLAUDE.md → local root</div></div>
-      <div class="flow-step"><div class="flow-num">4</div><div>Download project CLAUDE.md + skills + docs</div></div>
-      <div class="flow-step"><div class="flow-num">5</div><div>Connect GIT + DB credentials</div></div>
-    </div>
-    <div class="flow-card">
-      <h3>🔄 Task Switch Flow</h3>
-      <div class="flow-step"><div class="flow-num" style="background:var(--yellow);color:#000">1</div><div><b>Close old:</b> Upload docs, propose skill updates</div></div>
-      <div class="flow-step"><div class="flow-num" style="background:var(--yellow);color:#000">2</div><div><b>Close old:</b> Upload skill proposals</div></div>
-      <div class="flow-step"><div class="flow-num" style="background:var(--green)">3</div><div><b>New task:</b> Download task CLAUDE.md → overwrite project</div></div>
-      <div class="flow-step"><div class="flow-num" style="background:var(--green)">4</div><div><b>New task:</b> Download docs + skills via N-N tables</div></div>
-      <div class="flow-step"><div class="flow-num" style="background:var(--green)">5</div><div><b>New task:</b> Update CLAUDE.md References section</div></div>
-    </div>
-    <div class="flow-card">
-      <h3>🌙 End of Day Flow</h3>
-      <div class="flow-step"><div class="flow-num" style="background:var(--purple)">1</div><div>Batch aggregate skill update proposals</div></div>
-      <div class="flow-step"><div class="flow-num" style="background:var(--purple)">2</div><div>Present summary to POSUP for review</div></div>
-      <div class="flow-step"><div class="flow-num" style="background:var(--purple)">3</div><div>Approved proposals → update skills in SEPO</div></div>
-    </div>
-  </div>
-</div>
-
-</div>
-
-<div class="footer">
-  SEPO — Software Engineering Process Orchestrator | Clevai | Updated: April 13, 2026
-</div>
+</div><!-- /layout -->
 
 <script>
-function togglePhase(el) {
-  const grid = el.nextElementSibling;
-  const arrow = el.querySelector('.phase-arrow');
-  if (grid.style.display === 'none') {
-    grid.style.display = 'grid';
-    arrow.classList.add('open');
-  } else {
-    grid.style.display = 'none';
-    arrow.classList.remove('open');
-  }
-}
-// Auto-expand all phases on load
-document.querySelectorAll('.phase-header').forEach(h => togglePhase(h));
-</script>
+const STEPS={
+T010:{code:"T010",name:"Setup ClaudeCode: Pull Git & Connect DB",phase:"T0 — Setup",type:"A",team:"DevOps + Backend Dev",objective:"Thiet lap moi truong: clone repos, connect DB, setup .env.",preconditions:["Git installed","Node.js >= 20","GitLab access"],inputDocs:["GIT-DB-Structure.md — repo list & DB connections","vault.md — credentials (git, DB, API keys)"],outputDocs:["All repos cloned",".env created","DB connected & verified","Dev server starts"],skillFile:"sepo_skill/steps/T0/T010.md",prompt:"Step 1: Doc GIT-DB-Structure.md va vault.md\n1. Clone tat ca repos tu ma tran\n2. Ket noi database, liet ke tables\n3. Kiem tra Staging co data, neu chua copy 100 rows tu Prod\n4. Verify tat ca tables co data\n\nStep 2: Doc va su dung CLAUDE.md\n- Hoi user thong tin setup lan dau\n- Doc Company-design-system, Clevai_Tech_Stack_Prefer\n\nStep 3: Install gstack",refs:["@docs/GIT-DB-Structure.md","@docs/vault.md","@docs/Company-design-system.md","@docs/Clevai_Tech_Stack_Prefer.md"],next:"T110"},
+T110:{code:"T110",name:"L1: Voi Tong — Entity Overview",phase:"T1 — Analysis",type:"A",team:"BA + System Architect",objective:"Tao document L1: tong quan entities, relationships, system boundary.",preconditions:["T010 done","Co tai lieu yeu cau"],inputDocs:["VOI / requirement docs","Existing codebase (neu co)"],outputDocs:["L1_VoiTong.md — entity list + layer A/B/C","System boundary diagram (ASCII)"],skillFile:"sepo_skill/steps/T1/T110.md",prompt:"Ban la BA + System Architect.\nChuyen input thanh MarkDown theo VoiTable format:\n| Entity | Description | Layer (A/B/C) | Relationships |\n\nLayer A = Reference (it thay doi)\nLayer B = Plan (theo chu ky)\nLayer C = Transaction (thuong xuyen thay doi)",refs:["@docs/layerevent.md — for layer classification"],next:"T120"},
+T120:{code:"T120",name:"L2: Workflows",phase:"T1 — Analysis",type:"A",team:"BA + Process Designer",objective:"Mo ta cac workflow chinh dua tren entities o L1.",preconditions:["T110 done","User reviewed L1"],inputDocs:["L1_VoiTong.md","VOI / requirement docs"],outputDocs:["L2_Workflows.md — workflows + actors + triggers","Workflow-to-Entity mapping"],skillFile:"sepo_skill/steps/T1/T120.md",prompt:"Ban la BA + Process Designer.\nPhan tich workflows chinh. Moi workflow can:\n- Ten, Actors, Trigger, Steps tong quat, Output\nTao Workflow-to-Entity mapping.",refs:["@docs/L1_VoiTong.md"],next:"T130"},
+T130:{code:"T130",name:"L3: Workflow Details",phase:"T1 — Analysis",type:"A",team:"BA + UX + Backend Dev",objective:"Chi tiet hoa tung step: data flow, UI, API, validations.",preconditions:["T110 + T120 done"],inputDocs:["L1_VoiTong.md","L2_Workflows.md","Requirements"],outputDocs:["L3_WorkflowDetails.md — input/output/actor/UI/API/validation per step","Sequence diagrams (ASCII)"],skillFile:"sepo_skill/steps/T1/T130.md",prompt:"Ban la BA + UX + Backend Dev.\nChi tiet hoa tung step:\n- Input data, Output data, Actor\n- UI screen, API call, Validation rules\nVe sequence diagrams cho cac flow chinh.",refs:["@docs/L1_VoiTong.md","@docs/L2_Workflows.md"],next:"T140"},
+T140:{code:"T140",name:"Project Guide",phase:"T1 — Analysis",type:"A",team:"Tech Writer + PM",objective:"Tai lieu huong dan cho developer moi.",preconditions:["L1, L2, L3 done"],inputDocs:["L1, L2, L3 docs","Codebase structure"],outputDocs:["ProjectGuide.md — overview, setup, conventions, architecture"],skillFile:"sepo_skill/steps/T1/T140.md",prompt:"Ban la Technical Writer + PM.\nTao ProjectGuide: overview, setup instructions,\ncode conventions, architecture, team roles.",refs:["@docs/L1_VoiTong.md","@docs/L2_Workflows.md","@docs/L3_WorkflowDetails.md"],next:"T211"},
+T211:{code:"T211",name:"Prep: Update DB Schema",phase:"T2 — Architecture",type:"B",team:"DB Architect + Backend Dev",objective:"De xuat DB schema, sinh migration SQL.",preconditions:["L1 co","Biet DB engine"],inputDocs:["L1_VoiTong.md / AP draft","Current DB schema"],outputDocs:["migration.sql","ERD diagram (ASCII)","Schema proposal"],skillFile:"sepo_skill/steps/T2/T210/T211.md",prompt:"De xuat ArchitecturePack:\n1. ERD  2. Process  3. Wireframe  4. UserFlows\n5. Complex Logic  6. Feature & Layer\n7. Task classification (doc layerevent.md):\n- A: Chi UI/API  - B: Sua schema (khong Event layer)\n- C: Touch Event/CalculateKR layers",refs:["@docs/L1_VoiTong.md","@docs/database_schema_stg.md"],next:"T212"},
+T212:{code:"T212",name:"Build ArchitecturePack",phase:"T2 — Architecture",type:"A",team:"Architect + Writer + DB",objective:"Tao ArchitecturePack day du 7 sections.",preconditions:["L1-L3 done","Schema reviewed"],inputDocs:["L1, L2, L3 docs","DB Schema","layerevent.md"],outputDocs:["ArchitecturePack.md (7 sections)"],skillFile:"sepo_skill/steps/T2/T210/T212.md",prompt:"Tao ArchitecturePack:\n1. ERD + schema  2. Process flows + status machines\n3. ASCII wireframes  4. Sequence diagrams\n5. Algorithms, formulas  6. Feature→Code→DB mapping\n7. Task classification A/B/C",refs:["@docs/L1_VoiTong.md","@docs/L2_Workflows.md","@docs/L3_WorkflowDetails.md","@docs/layerevent.md"],next:"T220"},
+T220:{code:"T220",name:"Create ISP",phase:"T2 — Architecture",type:"A",team:"Tech Lead + Architect + QA",objective:"Chia AP thanh incremental TDD steps.",preconditions:["AP approved"],inputDocs:["ArchitecturePack.md"],outputDocs:["IncrementalStepPlan.md — steps + scope + tests + deps"],skillFile:"sepo_skill/steps/T2/T220.md",prompt:"You are a senior staff engineer.\nBreak system into SMALL, INCREMENTAL, BUILDABLE STEPS.\nRules: Atomic, Testable, Independent, Ordered (DB→API→UI), TDD.\nEach step: ID, Scope, Files, Dependencies, Test Criteria, Type A/B/C.",refs:["@docs/ArchitecturePack.md","@docs/Clevai_Tech_Stack_Prefer.md"],next:"T230"},
+T230:{code:"T230",name:"Audit ISP ⭐ Quality Gate #1",phase:"T2 — Architecture",type:"A",team:"ISP Auditor + Architect",objective:"7-point audit moi ISP step. Gate truoc khi code.",preconditions:["ISP created","AP approved"],inputDocs:["IncrementalStepPlan.md","ArchitecturePack.md","Tech Stack Prefer"],outputDocs:["ISP Audited — enriched, ENRICH/BLOCK verdict"],skillFile:"sepo_skill/steps/T2/T230.md",gate:"Quality Gate #1 — 7 tieu chi truoc khi code",prompt:"ISP Quality Auditor. 7 tieu chi:\n① Data Source (table/field cu the?)\n② API Contract (method, endpoint, schema?)\n③ UI Spec (wireframe ref?)\n④ Business Logic (formulas?)\n⑤ Acceptance Criteria (checklist FE+BE?)\n⑥ Library/Tool (specific?)\n⑦ Dependencies (step truoc?)\n\nVerdict: ENRICH (>=5/7) | BLOCK (<5/7)",refs:["@docs/IncrementalStepPlan.md","@docs/ArchitecturePack.md"],next:"T310"},
+T310:{code:"T310",name:"Build — Implement 🔄",phase:"T3 — Build",type:"A/B",team:"Senior Engineer + Reviewer",objective:"TDD implement 1 ISP step. Lap cho moi step.",preconditions:["ISP Audited","Prev steps done"],inputDocs:["ISP Audited + AP section"],outputDocs:["Tests passing","Code implemented","npm run check OK"],skillFile:"sepo_skill/steps/T3/T300-001/T310-001.md",prompt:"Senior engineer, disciplined incremental dev.\nRules: One change/step. No speculation. Tests mandatory.\n1. Write tests  2. Implement minimum  3. npm run check\n4. No regressions  5. Document limitations  6. Ask to continue",refs:["@docs/IncrementalStepPlanAudited.md","@docs/ArchitecturePack.md"],next:"T320"},
+T320:{code:"T320",name:"Test — Verify 🔄",phase:"T3 — Build",type:"A",team:"QA + Security",objective:"Verify step: happy path, edge cases, security.",preconditions:["T310 done"],inputDocs:["ISP step + test criteria","Code"],outputDocs:["Test report","Edge cases documented"],skillFile:"sepo_skill/steps/T3/T300-001/T320-001.md",prompt:"Disciplined senior engineer. Step desc = source of truth.\nOne step only. No speculation.\n1. TEST DESIGN  2. HAPPY PATH  3. EDGE CASES\n4. ERROR HANDLING  5. SECURITY  6. REGRESSION",refs:["@docs/IncrementalStepPlanAudited.md"],next:"T310 (next) or T380"},
+T380:{code:"T380",name:"Finish — Commit & Push",phase:"T3 — Build",type:"A",team:"DevOps + Writer",objective:"Commit, push git, tao MR.",preconditions:["All ISP steps done"],inputDocs:["vault.md","GIT-DB-Structure.md"],outputDocs:["Code on Git","MR created","CI passes"],skillFile:"sepo_skill/steps/T3/T380.md",prompt:"1. Doc vault.md lay git credentials\n2. Naming: Object + Function + Interface (GIT-DB-Structure)\n3. Merge FE+BE → 1 repo → push gitlab.clevai.vn/fe/[name]\n4. MR → staging-c, fix CI\n5. Domain: [name].mikai.tech",refs:["@docs/vault.md","@docs/GIT-DB-Structure.md"],next:"T390"},
+T390:{code:"T390",name:"Post-Audit ⭐ Quality Gate #2",phase:"T3 — Build",type:"A",team:"Architect + Auditor + QA",objective:"So sanh code vs AP: gaps, discrepancies.",preconditions:["Code pushed"],inputDocs:["ArchitecturePack.md","ISP","Codebase","layerevent.md"],outputDocs:["PostAudit.md — AP vs Code matrix"],skillFile:"sepo_skill/steps/T3/T390.md",gate:"Quality Gate #2 — Code phai match AP",prompt:"Senior architect + code auditor.\nMUST follow CLAUDE.md.\nAudit: 1. Schema vs ERD  2. APIs vs specs\n3. UI vs wireframes  4. Logic vs algorithms\n5. Re-classify A/B/C",refs:["@docs/ArchitecturePack.md","@docs/layerevent.md"],next:"T411"},
+T411:{code:"T411",name:"Run Migration",phase:"T4 — Deploy",type:"B",team:"DB Architect + DevOps",objective:"Chay migration tren staging.",preconditions:["migration.sql co"],inputDocs:["migration.sql","vault.md"],outputDocs:["Schema migrated","No data loss"],skillFile:"sepo_skill/steps/T4/T410/T411.md",prompt:"Senior DB architect: read vault + migration.sql,\ncompare with current schema, execute safely\nwith rollback plan.",refs:["@docs/migration.sql","@docs/vault.md"],next:"T412"},
+T412:{code:"T412",name:"Deploy Local & Smoke",phase:"T4 — Deploy",type:"A",team:"DevOps + QA",objective:"Deploy local, smoke test.",preconditions:["T411 done"],inputDocs:["Codebase",".env"],outputDocs:["App running","Smoke pass"],skillFile:"sepo_skill/steps/T4/T410/T412.md",prompt:"Start dev server, verify pages, test CRUD,\ncheck APIs, verify DB connections.",refs:["@docs/vault.md"],next:"T413"},
+T413:{code:"T413",name:"Push Git & CI",phase:"T4 — Deploy",type:"A",team:"DevOps",objective:"Push code, verify CI.",preconditions:["T412 pass"],inputDocs:["vault.md"],outputDocs:["Code on remote","CI passes"],skillFile:"sepo_skill/steps/T4/T410/T413.md",prompt:"Commit, push, verify CI pipeline, fix failures.",refs:["@docs/vault.md"],next:"T414"},
+T414:{code:"T414",name:"Deploy Staging",phase:"T4 — Deploy",type:"A",team:"DevOps + SRE",objective:"Deploy to staging.",preconditions:["T413 CI pass"],inputDocs:["vault.md"],outputDocs:["Staging live","Health OK"],skillFile:"sepo_skill/steps/T4/T410/T414.md",prompt:"Deploy staging, verify health check,\ntest critical flows. Domain: [name].mikai.tech",refs:["@docs/vault.md"],next:"T415"},
+T415:{code:"T415",name:"Staging Checkpoint",phase:"T4 — Deploy",type:"A",team:"Writer + DevOps",objective:"Luu checkpoint staging.",preconditions:["T414 success"],inputDocs:["Git log","Staging DB"],outputDocs:["STG_VersionCommit.md","STG_DB_Schema.md"],skillFile:"sepo_skill/steps/T4/T410/T415.md",prompt:"Tong hop commits → STG_VersionCommit_vxx_date.md\nExport schema → STG_DB_Schema_{ver}_{date}.md",refs:["@docs/vault.md"],next:"T421"},
+T421:{code:"T421",name:"Prep Test Data",phase:"T4 — UAT",type:"A",team:"QA Lead + Data Eng",objective:"Chuan bi test data + test cases.",preconditions:["Staging deployed"],inputDocs:["ArchitecturePack.md","Staging URL"],outputDocs:["Test cases","Test data ready"],skillFile:"sepo_skill/steps/T4/T420/T421.md",prompt:"QA Lead: doc AP, viet test cases (happy + edge),\ntao test data, tao test accounts.",refs:["@docs/ArchitecturePack.md"],next:"T422"},
+T422:{code:"T422",name:"Execute UAT & Feedback",phase:"T4 — UAT",type:"A",team:"QA + UX",objective:"Chay UAT, thu feedback.",preconditions:["T421 done"],inputDocs:["Test cases","T720_TestFeedback_Template"],outputDocs:["TestFeedback_{date}.xlsx"],skillFile:"sepo_skill/steps/T4/T420/T422.md",prompt:"Download T720_TestFeedback_Template,\nexecute tests, record pass/fail + screenshots + severity.",refs:["@docs/T720_TestFeedback_Template.xlsx"],next:"T423"},
+T423:{code:"T423",name:"Classify Feedback A/B/C",phase:"T4 — UAT",type:"A",team:"QA + PM + Architect",objective:"Phan loai feedback.",preconditions:["T422 done"],inputDocs:["TestFeedback.xlsx","layerevent.md"],outputDocs:["Classified: A (UI) / B (Logic) / C (Perf)"],skillFile:"sepo_skill/steps/T4/T420/T423.md",prompt:"Phan loai theo layerevent.md:\nA: Chi UI/API\nB: Sua schema → can POSUP duyet\nC: Touch Event/KR → can POSUP + ARCH duyet",refs:["@docs/layerevent.md"],next:"T431/T432/T433"},
+T431:{code:"T431",name:"Fix A-type (UI/API)",phase:"T4 — Fix",type:"A",team:"Frontend + UX",objective:"Fix UI feedback.",preconditions:["T423 done","A items exist"],inputDocs:["A-type feedback"],outputDocs:["A items fixed"],skillFile:"sepo_skill/steps/T4/T430/T431.md",prompt:"Fix A-type items by severity.\nVerify no regression. npm run check.",refs:["@docs/TestFeedback.xlsx"],next:"Re-deploy T410"},
+T432:{code:"T432",name:"Fix B-type (Logic) ⚠️",phase:"T4 — Fix",type:"B",team:"Backend + BA",objective:"Fix logic, may change schema. POSUP approval needed.",preconditions:["T423 done","POSUP approved"],inputDocs:["B-type feedback","ArchitecturePack.md"],outputDocs:["B items fixed","Schema updated if needed"],skillFile:"sepo_skill/steps/T4/T430/T432.md",prompt:"⚠️ BAO POSUP DUYET TRUOC.\nCap nhat AP neu can. Fix items,\nupdate migration.sql, run full tests.",refs:["@docs/ArchitecturePack.md","@docs/layerevent.md"],next:"Re-deploy T410"},
+T433:{code:"T433",name:"Fix C-type (Perf) ⚠️⚠️",phase:"T4 — Fix",type:"C",team:"Perf Eng + Architect",objective:"Performance + core layer changes. POSUP + ARCH approval.",preconditions:["T423 done","POSUP + ARCH approved"],inputDocs:["C-type feedback","AP","layerevent.md"],outputDocs:["Perf improved","Core stable"],skillFile:"sepo_skill/steps/T4/T430/T433.md",prompt:"⚠️⚠️ BAO POSUP + ARCH DUYET TRUOC.\nPhan tich bottlenecks, fix, benchmark before/after.",refs:["@docs/ArchitecturePack.md","@docs/layerevent.md"],next:"Re-deploy T410"},
+T510:{code:"T510",name:"Deploy Production",phase:"T5 — Production",type:"A",team:"DevOps + SRE + DB",objective:"Deploy len production.",preconditions:["UAT pass","Bugs fixed"],inputDocs:["vault.md","migration.sql (if any)"],outputDocs:["App live","Health check pass"],skillFile:"sepo_skill/steps/T5/T510.md",prompt:"Tong hop DB changes → changedb.sql\nTong hop keys → changevault.md\nMR vao prod-c kem files.",refs:["@docs/vault.md"],next:"T530"},
+T530:{code:"T530",name:"Production Checkpoint",phase:"T5 — Production",type:"A",team:"Writer + DevOps",objective:"Luu checkpoint production.",preconditions:["T510 stable"],inputDocs:["Git log","Prod DB"],outputDocs:["PRD_VersionCommit.md","PRD_DB_Schema.md"],skillFile:"sepo_skill/steps/T5/T530.md",prompt:"Tong hop commits → PRD_VersionCommit_vxx_date.md\nExport schema → PRD_DB_Schema_{ver}_{date}.md",refs:["@docs/vault.md"],next:"Done! 🎉"}
+};
 
+const PHASES=[
+  {id:"T0",label:"Setup Environment",desc:"1 step",color:"linear-gradient(135deg,#6366f1,#8b5cf6)",steps:["T010"]},
+  {id:"T1",label:"System Analysis",desc:"4 steps",color:"linear-gradient(135deg,#3b82f6,#06b6d4)",steps:["T110","T120","T130","T140"]},
+  {id:"T2",label:"Architecture & ISP",desc:"4 steps",color:"linear-gradient(135deg,#8b5cf6,#a855f7)",steps:["T211","T212","T220","T230"]},
+  {id:"T3",label:"Build BApp",desc:"4 steps",color:"linear-gradient(135deg,#22c55e,#16a34a)",steps:["T310","T320","T380","T390"]},
+  {id:"T4",label:"Deploy & UAT",desc:"11 steps",color:"linear-gradient(135deg,#f97316,#ef4444)",steps:["T411","T412","T413","T414","T415","T421","T422","T423","T431","T432","T433"]},
+  {id:"T5",label:"Production",desc:"2 steps",color:"linear-gradient(135deg,#ec4899,#f43f5e)",steps:["T510","T530"]}
+];
+
+let activeStep=null;
+
+function renderTree(){
+  const root=document.getElementById('tree-root');
+  root.innerHTML=PHASES.map((p,i)=>`
+    <div>
+      <div class="phase-row" onclick="togglePhase('ph${i}')">
+        <div class="phase-dot" style="background:${p.color}">${p.id}</div>
+        <div class="phase-info"><div class="phase-label">${p.label}</div><div class="phase-sub">${p.desc}</div></div>
+        <span class="phase-chevron open" id="chev${i}">▶</span>
+      </div>
+      <div class="step-list open" id="ph${i}">
+        ${p.steps.map(s=>{const d=STEPS[s];if(!d)return'';
+          const tc=d.type==='A'?'ta':d.type==='B'?'tb':d.type==='C'?'tc':'ta';
+          return`<div class="step-row" id="row-${s}" onclick="selectStep('${s}')">
+            <span class="step-code">${d.code}</span>
+            <span class="step-label">${d.name}</span>
+            <span class="tp ${tc}">${d.type}</span>
+          </div>`}).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function togglePhase(id){
+  const el=document.getElementById(id);
+  const idx=id.replace('ph','');
+  const chev=document.getElementById('chev'+idx);
+  el.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+function selectStep(code){
+  document.querySelectorAll('.step-row').forEach(r=>r.classList.remove('active'));
+  document.getElementById('row-'+code)?.classList.add('active');
+  activeStep=code;
+  renderDetail(code);
+}
+
+function renderDetail(code){
+  const d=STEPS[code];if(!d)return;
+  const tc=d.type==='A'?'ta':d.type==='B'?'tb':d.type==='C'?'tc':'ta';
+  const main=document.getElementById('main-panel');
+  main.innerHTML=`<div class="det">
+    <div class="det-head">
+      <h2>${d.code} — ${d.name}</h2>
+      <div class="det-tags">
+        <span class="tp ${tc}" style="font-size:.75rem;padding:.15rem .5rem">Type ${d.type}</span>
+        <span class="det-tag">${d.phase}</span>
+        <span class="det-tag">👥 ${d.team}</span>
+        <span class="det-tag det-tag-s">📂 ${d.skillFile}</span>
+      </div>
+    </div>
+
+    <div class="det-section"><h4>🎯 Objective</h4><p style="font-size:.92rem">${d.objective}</p></div>
+
+    <div class="det-section"><h4>⚡ Preconditions</h4><ul>${d.preconditions.map(p=>'<li>'+p+'</li>').join('')}</ul></div>
+
+    <div class="det-section"><h4>📥 Input Docs</h4><ul>${d.inputDocs.map(p=>'<li>'+p+'</li>').join('')}</ul></div>
+
+    <div class="det-section"><h4>📤 Output</h4><ul>${d.outputDocs.map(p=>'<li>'+p+'</li>').join('')}</ul></div>
+
+    ${d.gate?`<div class="det-section"><div class="gate-box">⭐ <b>${d.gate}</b></div></div>`:''}
+
+    <div class="det-section"><h4>📋 Skill Prompt</h4><pre>${esc(d.prompt)}</pre></div>
+
+    <div class="det-section"><h4>🔗 References (L2 lazy-load)</h4><div class="ref-grid">${d.refs.map(r=>`<span class="det-tag det-tag-d">${r}</span>`).join('')}</div></div>
+
+    <div class="det-section"><h4>➡️ Next Step</h4><div class="next-box">${d.next}</div></div>
+  </div>`;
+  main.scrollTop=0;
+}
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function switchSbTab(id){
+  document.querySelectorAll('.sb-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sb-panel').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sb-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+renderTree();
+// Auto-select first step
+selectStep('T010');
+</script>
 </body>
 </html>
